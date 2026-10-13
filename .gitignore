@@ -3,3 +3,5 @@ report/
 coverage/ 
 dist/
 playwright-report/
+.features-gen/
+test-results/
