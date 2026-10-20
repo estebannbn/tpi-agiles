@@ -32,6 +32,13 @@ export function mountApp(container: HTMLElement) {
           <span class="badge">Jugador Activo</span>
           <h2 id="jugador-nombre" class="player-heading"></h2>
         </div>
+        <div class="tiempo-partida" role="radiogroup" aria-label="Tiempo de partida">
+          <span class="label">Tiempo de partida</span>
+          <label class="opcion">
+            <input type="radio" name="tiempo-partida" value="10" />
+            10 minutos
+          </label>
+        </div>
       </section>
     </div>
   `;

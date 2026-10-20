@@ -180,3 +180,19 @@ body {
   font-size: 1.5rem;
   color: var(--text-main);
 }
+
+.tiempo-partida {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.opcion {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-main);
+  cursor: pointer;
+}
