@@ -40,15 +40,25 @@ export function mountApp(container: HTMLElement) {
   const input = container.querySelector<HTMLInputElement>("#nombre");
   const jugadorCard = container.querySelector<HTMLElement>("#jugador-card");
   const jugadorNombre = container.querySelector<HTMLElement>("#jugador-nombre");
+  const mensajeError = container.querySelector<HTMLElement>("#mensaje-error");
 
   form?.addEventListener("submit", (e) => {
     e.preventDefault();
     const nombre = input?.value.trim() ?? "";
 
     if (nombre) {
+      if (mensajeError) {
+        mensajeError.textContent = "";
+        mensajeError.style.display = "none";
+      }
       if (jugadorCard && jugadorNombre) {
         jugadorNombre.textContent = nombre;
         jugadorCard.style.display = "block";
+      }
+    } else {
+      if (mensajeError) {
+        mensajeError.textContent = "El nombre no puede estar vacío";
+        mensajeError.style.display = "block";
       }
     }
   });
