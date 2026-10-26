@@ -13,13 +13,6 @@ When(
   },
 );
 
-Then(
-  "se muestra el tiempo de partida {string}",
-  async ({ page }, duracion: string) => {
-    await expect(
-      page
-        .getByRole("radiogroup", { name: "Tiempo de partida" })
-        .getByRole("radio", { name: duracion }),
-    ).toBeChecked();
-  },
-);
+Then("veo el reloj en {string}", async ({ page }, tiempo: string) => {
+  await expect(page.getByTestId("reloj")).toHaveText(tiempo);
+});
