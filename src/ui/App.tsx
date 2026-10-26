@@ -4,6 +4,7 @@ export function App() {
   const [nombre, setNombre] = useState("");
   const [jugador, setJugador] = useState<string | null>(null);
   const [error, setError] = useState("");
+  const [tiempo, setTiempo] = useState<string | null>(null);
 
   function confirmar(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -67,10 +68,24 @@ export function App() {
           >
             <span className="label">Tiempo de partida</span>
             <label className="opcion">
-              <input type="radio" name="tiempo-partida" value="10" />
+              <input
+                type="radio"
+                name="tiempo-partida"
+                value="10 minutos"
+                checked={tiempo === "10:00"}
+                onChange={() => setTiempo("10:00")}
+              />
               10 minutos
             </label>
           </div>
+          {tiempo ? (
+            <div className="reloj-container">
+              <span className="label">Tiempo restante</span>
+              <div id="reloj" data-testid="reloj" className="reloj">
+                {tiempo}
+              </div>
+            </div>
+          ) : null}
         </section>
       ) : null}
     </div>
