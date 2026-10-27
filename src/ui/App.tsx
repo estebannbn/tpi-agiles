@@ -1,4 +1,7 @@
 import { FormEvent, useState } from "react";
+import { formatearReloj } from "../domain/reloj";
+
+const duraciones = [5, 10];
 
 export function App() {
   const [nombre, setNombre] = useState("");
@@ -67,16 +70,18 @@ export function App() {
             aria-label="Tiempo de partida"
           >
             <span className="label">Tiempo de partida</span>
-            <label className="opcion">
-              <input
-                type="radio"
-                name="tiempo-partida"
-                value="10 minutos"
-                checked={tiempo === "10:00"}
-                onChange={() => setTiempo("10:00")}
-              />
-              10 minutos
-            </label>
+            {duraciones.map((minutos) => (
+              <label className="opcion" key={minutos}>
+                <input
+                  type="radio"
+                  name="tiempo-partida"
+                  value={`${minutos} minutos`}
+                  checked={tiempo === formatearReloj(minutos)}
+                  onChange={() => setTiempo(formatearReloj(minutos))}
+                />
+                {minutos} minutos
+              </label>
+            ))}
           </div>
           {tiempo ? (
             <div className="reloj-container">
