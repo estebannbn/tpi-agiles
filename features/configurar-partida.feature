@@ -35,3 +35,10 @@ Característica: Configurar partida
             Y ingreso el nombre "Ana" y confirmo
             Entonces se muestran "6" intentos
 
+    Regla: se puede elegir la cantidad de intentos
+        @CA-03
+        Escenario: El jugador elige 10 intentos
+            Dado que abro la aplicación
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando elijo "10 intentos"
+            Entonces se muestran "10" intentos
