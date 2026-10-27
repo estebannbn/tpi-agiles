@@ -13,4 +13,8 @@ describe("intentos", () => {
   it("configurarIntentos(11) queda en 10", () => {
     expect(configurarIntentos(11)).toBe(10);
   });
+
+  it("configurarIntentos(8) devuelve 8", () => {
+    expect(configurarIntentos(8)).toBe(8);
+  });
 });
