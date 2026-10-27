@@ -1,4 +1,5 @@
 import { FormEvent, useState } from "react";
+import { intentosIniciales } from "../domain/intentos";
 import { formatearReloj } from "../domain/reloj";
 
 const duraciones = [5, 10, 15];
@@ -82,6 +83,14 @@ export function App() {
                 {minutos} minutos
               </label>
             ))}
+          </div>
+          <div
+            className="tiempo-partida"
+            role="group"
+            aria-label="Cantidad de intentos"
+          >
+            <span className="label">Cantidad de intentos</span>
+            <span>{intentosIniciales()} intentos</span>
           </div>
           {tiempo ? (
             <div className="reloj-container">
