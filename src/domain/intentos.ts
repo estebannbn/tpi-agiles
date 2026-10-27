@@ -3,5 +3,7 @@ export function intentosIniciales(): number {
 }
 
 export function configurarIntentos(cantidad: number): number {
-  return cantidad >= 10 ? 10 : 6;
+  if (cantidad > 10) return 10;
+  if (cantidad < 6) return 6;
+  return cantidad;
 }
