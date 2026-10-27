@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
 import { formatearReloj } from "../domain/reloj";
 
-const duraciones = [5, 10];
+const duraciones = [5, 10, 15];
 
 export function App() {
   const [nombre, setNombre] = useState("");

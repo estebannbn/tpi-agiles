@@ -8,7 +8,7 @@ When(
   async ({ page }, duracion: string) => {
     await page
       .getByRole("radiogroup", { name: "Tiempo de partida" })
-      .getByRole("radio", { name: duracion })
+      .getByRole("radio", { name: duracion, exact: true })
       .check();
   },
 );

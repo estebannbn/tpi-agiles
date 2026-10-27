@@ -20,3 +20,11 @@ Característica: Configurar partida
             Y ingreso el nombre "Ana" y confirmo
             Cuando elijo un tiempo de partida de "5 minutos"
             Entonces veo el reloj en "05:00"
+
+        @CA-01
+        Escenario: El jugador elige 15 minutos
+            Dado que abro la aplicación
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando elijo un tiempo de partida de "15 minutos"
+            Entonces veo el reloj en "15:00"
+
