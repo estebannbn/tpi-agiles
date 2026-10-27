@@ -6,3 +6,4 @@ describe("reloj", () => {
     expect(formatearReloj(10)).toBe("10:00");
   });
 });
+
