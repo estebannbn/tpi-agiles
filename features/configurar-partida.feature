@@ -12,4 +12,4 @@ Característica: Configurar partida
             Dado que abro la aplicación
             Y ingreso el nombre "Ana" y confirmo
             Cuando elijo un tiempo de partida de "10 minutos"
-            Entonces se muestra el tiempo de partida "10 minutos"
+            Entonces veo el reloj en "10:00"
