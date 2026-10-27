@@ -16,3 +16,7 @@ When(
 Then("veo el reloj en {string}", async ({ page }, tiempo: string) => {
   await expect(page.getByTestId("reloj")).toHaveText(tiempo);
 });
+
+Then("se muestran {string} intentos", async ({ page }, cantidad: string) => {
+  await expect(page.getByText(`${cantidad} intentos`)).toBeVisible();
+});
