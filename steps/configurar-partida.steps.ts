@@ -13,6 +13,13 @@ When(
   },
 );
 
+When("elijo {string}", async ({ page }, opcion: string) => {
+  await page
+    .getByRole("group", { name: "Cantidad de intentos" })
+    .getByRole("radio", { name: opcion, exact: true })
+    .check();
+});
+
 Then("veo el reloj en {string}", async ({ page }, tiempo: string) => {
   await expect(page.getByTestId("reloj")).toHaveText(tiempo);
 });

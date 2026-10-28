@@ -1,14 +1,16 @@
 import { FormEvent, useState } from "react";
-import { intentosIniciales } from "../domain/intentos";
+import { configurarIntentos, intentosIniciales } from "../domain/intentos";
 import { formatearReloj } from "../domain/reloj";
 
 const duraciones = [5, 10, 15];
+const opcionesIntentos = [6, 7, 8, 9, 10];
 
 export function App() {
   const [nombre, setNombre] = useState("");
   const [jugador, setJugador] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [tiempo, setTiempo] = useState<string | null>(null);
+  const [intentos, setIntentos] = useState(intentosIniciales());
 
   function confirmar(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -90,7 +92,20 @@ export function App() {
             aria-label="Cantidad de intentos"
           >
             <span className="label">Cantidad de intentos</span>
-            <span>{intentosIniciales()} intentos</span>
+            {opcionesIntentos.map((cantidad) => (
+              <label className="opcion" key={cantidad}>
+                <input
+                  type="radio"
+                  name="cantidad-intentos"
+                  aria-label={`${cantidad} intentos`}
+                  value={`${cantidad} intentos`}
+                  checked={intentos === cantidad}
+                  onChange={() => setIntentos(configurarIntentos(cantidad))}
+                />
+                {cantidad}
+              </label>
+            ))}
+            <span>{intentos} intentos</span>
           </div>
           {tiempo ? (
             <div className="reloj-container">
