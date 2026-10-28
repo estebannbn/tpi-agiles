@@ -17,4 +17,8 @@ describe("intentos", () => {
   it("configurarIntentos(8) devuelve 8", () => {
     expect(configurarIntentos(8)).toBe(8);
   });
+
+  it("un valor menor a 6 queda en 6", () => {
+    expect(configurarIntentos(5)).toBe(6);
+  });
 });
