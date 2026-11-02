@@ -15,3 +15,13 @@ Característica: Jugar partida
             Entonces veo la palabra "_ _ _ _"
             Y veo "6" vidas
 
+    Regla: arriesgar una letra presente revela la letra sin perder vidas
+        @CA-02
+        Escenario: Acertar A revela la letra y no descuenta vidas
+            Dado que abro la aplicación con la palabra "GATO"
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando inicio la partida
+            Y arriesgo la letra "A"
+            Entonces veo la palabra "_ A _ _"
+            Y veo "6" vidas
+
