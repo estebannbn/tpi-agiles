@@ -24,3 +24,7 @@ Then("veo {string} vidas", async ({ page }, vidas: string) => {
   await expect(page.getByTestId("vidas")).toHaveText(vidas);
 });
 
+Then("veo el mensaje {string}", async ({ page }, mensaje: string) => {
+  await expect(page.getByTestId("resultado")).toHaveText(mensaje);
+});
+
