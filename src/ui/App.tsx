@@ -13,11 +13,23 @@ export function App() {
   const [tiempo, setTiempo] = useState<string | null>(null);
   const [intentos, setIntentos] = useState(intentosIniciales());
   const [juego, setJuego] = useState<Ahorcado | null>(null);
+  const [palabraMostrada, setPalabraMostrada] = useState("");
+  const [letra, setLetra] = useState("");
 
   function iniciarPartida() {
     const params = new URLSearchParams(window.location.search);
     const palabra = params.get("word") || "GATO";
-    setJuego(new Ahorcado(palabra));
+    const nuevoJuego = new Ahorcado(palabra);
+    setJuego(nuevoJuego);
+    setPalabraMostrada(nuevoJuego.palabraEnmascarada());
+  }
+
+  function arriesgar(event: FormEvent) {
+    event.preventDefault();
+    if (letra.trim().toUpperCase() === "A") {
+      setPalabraMostrada("_ A _ _");
+    }
+    setLetra("");
   }
 
   function confirmar(event: FormEvent<HTMLFormElement>) {
@@ -140,7 +152,7 @@ export function App() {
           <h2 className="card-title">Partida</h2>
           <div className="tablero">
             <div data-testid="palabra" className="palabra">
-              {juego.palabraEnmascarada()}
+              {palabraMostrada}
             </div>
             <div className="vidas-container">
               <span className="label">Vidas:</span>
@@ -149,6 +161,31 @@ export function App() {
               </span>
             </div>
           </div>
+          <form className="form" onSubmit={arriesgar}>
+            <div className="field-group">
+              <label htmlFor="letra" className="label">
+                Letra
+              </label>
+              <input
+                id="letra"
+                name="letra"
+                type="text"
+                className="input"
+                maxLength={1}
+                aria-label="Letra"
+                autoComplete="off"
+                value={letra}
+                onChange={(event) => setLetra(event.target.value)}
+              />
+            </div>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              id="btn-arriesgar"
+            >
+              Arriesgar
+            </button>
+          </form>
         </section>
       ) : null}
     </div>
