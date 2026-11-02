@@ -14,6 +14,7 @@ export function App() {
   const [intentos, setIntentos] = useState(intentosIniciales());
   const [juego, setJuego] = useState<Ahorcado | null>(null);
   const [palabraMostrada, setPalabraMostrada] = useState("");
+  const [vidasRestantes, setVidasRestantes] = useState(6);
   const [letra, setLetra] = useState("");
 
   function iniciarPartida() {
@@ -22,12 +23,15 @@ export function App() {
     const nuevoJuego = new Ahorcado(palabra);
     setJuego(nuevoJuego);
     setPalabraMostrada(nuevoJuego.palabraEnmascarada());
+    setVidasRestantes(nuevoJuego.getVidas());
   }
 
   function arriesgar(event: FormEvent) {
     event.preventDefault();
-    if (letra.trim().toUpperCase() === "A") {
-      setPalabraMostrada("_ A _ _");
+    if (juego && letra.trim()) {
+      juego.adivinar(letra.trim());
+      setPalabraMostrada(juego.palabraEnmascarada());
+      setVidasRestantes(juego.getVidas());
     }
     setLetra("");
   }
@@ -157,7 +161,7 @@ export function App() {
             <div className="vidas-container">
               <span className="label">Vidas:</span>
               <span data-testid="vidas" className="vidas">
-                {juego.getVidas()}
+                {vidasRestantes}
               </span>
             </div>
           </div>
