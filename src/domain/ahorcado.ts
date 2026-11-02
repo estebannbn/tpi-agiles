@@ -3,7 +3,7 @@ export class Ahorcado {
   private letrasAdivinadas: Set<string> = new Set();
   private vidas: number = 6;
 
-  constructor(palabra: string) {
+  constructor(palabra: string, _vidas?: number) {
     this.palabra = palabra.toUpperCase();
   }
 
