@@ -25,3 +25,13 @@ Característica: Jugar partida
             Entonces veo la palabra "_ A _ _"
             Y veo "6" vidas
 
+    Regla: arriesgar una letra ausente descuenta una vida
+        @CA-03
+        Escenario: Fallar Z descuenta una vida
+            Dado que abro la aplicación con la palabra "GATO"
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando inicio la partida
+            Y arriesgo la letra "Z"
+            Entonces veo la palabra "_ _ _ _"
+            Y veo "5" vidas
+
