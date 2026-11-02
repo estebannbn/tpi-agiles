@@ -26,4 +26,8 @@ export class Ahorcado {
   getVidas(): number {
     return this.vidas;
   }
+
+  gano(): boolean {
+    return false;
+  }
 }
