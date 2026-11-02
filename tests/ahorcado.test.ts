@@ -13,4 +13,9 @@ describe("Ahorcado - Dominio", () => {
     juego.adivinar("E");
     expect(juego.getVidas()).toBe(5);
   });
+
+  it("inicia con las vidas indicadas", () => {
+    const juego = new Ahorcado("GATO", 10);
+    expect(juego.getVidas()).toBe(10);
+  });
 });

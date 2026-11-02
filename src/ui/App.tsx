@@ -20,7 +20,7 @@ export function App() {
   function iniciarPartida() {
     const params = new URLSearchParams(window.location.search);
     const palabra = params.get("word") || "GATO";
-    const nuevoJuego = new Ahorcado(palabra);
+    const nuevoJuego = new Ahorcado(palabra, intentos);
     setJuego(nuevoJuego);
     setPalabraMostrada(nuevoJuego.palabraEnmascarada());
     setVidasRestantes(nuevoJuego.getVidas());

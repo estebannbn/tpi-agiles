@@ -35,3 +35,12 @@ Característica: Jugar partida
             Entonces veo la palabra "_ _ _ _"
             Y veo "5" vidas
 
+    Regla: la partida usa los intentos configurados
+        @CA-04
+        Escenario: La partida usa los 10 intentos elegidos
+            Dado que abro la aplicación con la palabra "GATO"
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando elijo "10 intentos"
+            Y inicio la partida
+            Entonces veo "10" vidas
+
