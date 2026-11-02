@@ -1,4 +1,5 @@
 import { FormEvent, useState } from "react";
+import { Ahorcado } from "../domain/ahorcado";
 import { configurarIntentos, intentosIniciales } from "../domain/intentos";
 import { formatearReloj } from "../domain/reloj";
 
@@ -11,6 +12,13 @@ export function App() {
   const [error, setError] = useState("");
   const [tiempo, setTiempo] = useState<string | null>(null);
   const [intentos, setIntentos] = useState(intentosIniciales());
+  const [juego, setJuego] = useState<Ahorcado | null>(null);
+
+  function iniciarPartida() {
+    const params = new URLSearchParams(window.location.search);
+    const palabra = params.get("word") || "GATO";
+    setJuego(new Ahorcado(palabra));
+  }
 
   function confirmar(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -115,6 +123,32 @@ export function App() {
               </div>
             </div>
           ) : null}
+
+          <button
+            type="button"
+            className="btn btn-primary"
+            id="btn-jugar"
+            onClick={iniciarPartida}
+          >
+            Jugar
+          </button>
+        </section>
+      ) : null}
+
+      {juego ? (
+        <section className="card" id="tablero-card">
+          <h2 className="card-title">Partida</h2>
+          <div className="tablero">
+            <div data-testid="palabra" className="palabra">
+              {juego.palabraEnmascarada()}
+            </div>
+            <div className="vidas-container">
+              <span className="label">Vidas:</span>
+              <span data-testid="vidas" className="vidas">
+                {juego.getVidas()}
+              </span>
+            </div>
+          </div>
         </section>
       ) : null}
     </div>
