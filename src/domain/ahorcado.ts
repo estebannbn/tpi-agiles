@@ -1,10 +1,11 @@
 export class Ahorcado {
   private palabra: string;
   private letrasAdivinadas: Set<string> = new Set();
-  private vidas: number = 6;
+  private vidas: number;
 
-  constructor(palabra: string, _vidas?: number) {
+  constructor(palabra: string, vidas = 6) {
     this.palabra = palabra.toUpperCase();
+    this.vidas = vidas;
   }
 
   adivinar(letra: string): void {
