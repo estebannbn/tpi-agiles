@@ -27,4 +27,8 @@ describe("Ahorcado - Dominio", () => {
     juego.adivinar("O");
     expect(juego.gano()).toBe(true);
   });
+
+  it("una partida nueva no está ganada", () => {
+    expect(new Ahorcado("GATO").gano()).toBe(false);
+  });
 });
