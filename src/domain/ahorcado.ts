@@ -1,23 +1,23 @@
 export class Ahorcado {
-  private palabra: string;
+  private palabraSecreta: string;
   private letrasAdivinadas: Set<string> = new Set();
   private vidas: number;
 
   constructor(palabra: string, vidas = 6) {
-    this.palabra = palabra.toUpperCase();
+    this.palabraSecreta = palabra.toUpperCase();
     this.vidas = vidas;
   }
 
   adivinar(letra: string): void {
     const l = letra.toUpperCase();
     this.letrasAdivinadas.add(l);
-    if (!this.palabra.includes(l)) {
+    if (!this.palabraSecreta.includes(l)) {
       this.vidas--;
     }
   }
 
   palabraEnmascarada(): string {
-    return this.palabra
+    return this.palabraSecreta
       .split("")
       .map((l) => (this.letrasAdivinadas.has(l) ? l : "_"))
       .join(" ");
@@ -28,10 +28,14 @@ export class Ahorcado {
   }
 
   gano(): boolean {
-    return this.palabra.split("").every((l) => this.letrasAdivinadas.has(l));
+    return this.palabraSecreta.split("").every((l) => this.letrasAdivinadas.has(l));
   }
 
   perdio(): boolean {
     return this.vidas === 0;
+  }
+
+  palabra(): string {
+    return "";
   }
 }

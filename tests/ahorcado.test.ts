@@ -43,4 +43,8 @@ describe("Ahorcado - Dominio", () => {
   it("una partida nueva no está perdida", () => {
     expect(new Ahorcado("GATO").perdio()).toBe(false);
   });
+
+  it("palabra devuelve la palabra secreta", () => {
+    expect(new Ahorcado("GATO").palabra()).toBe("GATO");
+  });
 });
