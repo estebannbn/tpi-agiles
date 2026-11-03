@@ -32,6 +32,6 @@ export class Ahorcado {
   }
 
   perdio(): boolean {
-    return false;
+    return true;
   }
 }
