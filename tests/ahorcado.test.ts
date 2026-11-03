@@ -18,4 +18,17 @@ describe("Ahorcado - Dominio", () => {
     const juego = new Ahorcado("GATO", 10);
     expect(juego.getVidas()).toBe(10);
   });
+
+  it("gano es true cuando la palabra está completa", () => {
+    const juego = new Ahorcado("GATO");
+    juego.adivinar("G");
+    juego.adivinar("A");
+    juego.adivinar("T");
+    juego.adivinar("O");
+    expect(juego.gano()).toBe(true);
+  });
+
+  it("una partida nueva no está ganada", () => {
+    expect(new Ahorcado("GATO").gano()).toBe(false);
+  });
 });

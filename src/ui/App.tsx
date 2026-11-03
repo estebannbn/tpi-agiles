@@ -190,6 +190,11 @@ export function App() {
               Arriesgar
             </button>
           </form>
+          {juego.gano() ? (
+            <div data-testid="resultado" className="resultado">
+              GANASTE
+            </div>
+          ) : null}
         </section>
       ) : null}
     </div>
