@@ -10,6 +10,7 @@ export class Ahorcado {
 
   adivinar(letra: string): void {
     const l = letra.toUpperCase();
+    if (this.letrasAdivinadas.has(l)) return;
     this.letrasAdivinadas.add(l);
     if (!this.palabraSecreta.includes(l)) {
       this.vidas--;
