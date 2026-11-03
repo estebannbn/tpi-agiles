@@ -39,4 +39,8 @@ describe("Ahorcado - Dominio", () => {
     }
     expect(juego.perdio()).toBe(true);
   });
+
+  it("una partida nueva no está perdida", () => {
+    expect(new Ahorcado("GATO").perdio()).toBe(false);
+  });
 });
