@@ -47,4 +47,11 @@ describe("Ahorcado - Dominio", () => {
   it("palabra devuelve la palabra secreta", () => {
     expect(new Ahorcado("GATO").palabra()).toBe("GATO");
   });
+
+  it("una letra fallada repetida descuenta una sola vida", () => {
+    const juego = new Ahorcado("GATO");
+    juego.adivinar("Z");
+    juego.adivinar("Z");
+    expect(juego.getVidas()).toBe(5);
+  });
 });
