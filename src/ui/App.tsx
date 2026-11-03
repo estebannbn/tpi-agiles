@@ -30,7 +30,9 @@ export function App() {
     event.preventDefault();
     if (juego && letra.trim()) {
       juego.adivinar(letra.trim());
-      setPalabraMostrada(juego.palabraEnmascarada());
+      setPalabraMostrada(
+        juego.perdio() ? juego.palabra() : juego.palabraEnmascarada(),
+      );
       setVidasRestantes(juego.getVidas());
     }
     setLetra("");
@@ -193,6 +195,10 @@ export function App() {
           {juego.gano() ? (
             <div data-testid="resultado" className="resultado">
               GANASTE
+            </div>
+          ) : juego.perdio() ? (
+            <div data-testid="resultado" className="resultado">
+              PERDISTE
             </div>
           ) : null}
         </section>
