@@ -30,4 +30,8 @@ export class Ahorcado {
   gano(): boolean {
     return this.palabra.split("").every((l) => this.letrasAdivinadas.has(l));
   }
+
+  perdio(): boolean {
+    return false;
+  }
 }

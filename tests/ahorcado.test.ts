@@ -31,4 +31,12 @@ describe("Ahorcado - Dominio", () => {
   it("una partida nueva no está ganada", () => {
     expect(new Ahorcado("GATO").gano()).toBe(false);
   });
+
+  it("perdio es true al quedarse sin vidas", () => {
+    const juego = new Ahorcado("GATO");
+    for (const letra of ["B", "C", "D", "F", "H", "I"]) {
+      juego.adivinar(letra);
+    }
+    expect(juego.perdio()).toBe(true);
+  });
 });
