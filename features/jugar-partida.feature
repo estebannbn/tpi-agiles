@@ -71,3 +71,13 @@ Característica: Jugar partida
             Entonces veo el mensaje "PERDISTE"
             Y veo la palabra "GATO"
 
+    Regla: una letra fallada repetida no descuenta otra vida
+        @CA-07
+        Escenario: Repetir una letra fallada no descuenta otra vida
+            Dado que abro la aplicación con la palabra "GATO"
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando inicio la partida
+            Y arriesgo la letra "Z"
+            Y arriesgo la letra "Z"
+            Entonces veo "5" vidas
+
