@@ -36,6 +36,6 @@ export class Ahorcado {
   }
 
   palabra(): string {
-    return "";
+    return this.palabraSecreta;
   }
 }
