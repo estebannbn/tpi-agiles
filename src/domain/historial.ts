@@ -11,7 +11,7 @@ export class Historial {
   private partidas: PartidaResumen[] = [];
 
   registrar(partida: PartidaResumen): void {
-    this.partidas.push(partida);
+    this.partidas.unshift(partida);
   }
 
   listado(): PartidaResumen[] {
