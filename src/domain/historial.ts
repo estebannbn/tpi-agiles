@@ -8,9 +8,13 @@ export interface PartidaResumen {
 }
 
 export class Historial {
-  registrar(_partida: PartidaResumen): void { }
+  private partidas: PartidaResumen[] = [];
+
+  registrar(partida: PartidaResumen): void {
+    this.partidas.push(partida);
+  }
 
   listado(): PartidaResumen[] {
-    return [];
+    return [...this.partidas];
   }
 }
