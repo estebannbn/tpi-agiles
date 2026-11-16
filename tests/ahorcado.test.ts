@@ -31,4 +31,27 @@ describe("Ahorcado - Dominio", () => {
   it("una partida nueva no está ganada", () => {
     expect(new Ahorcado("GATO").gano()).toBe(false);
   });
+
+  it("perdio es true al quedarse sin vidas", () => {
+    const juego = new Ahorcado("GATO");
+    for (const letra of ["B", "C", "D", "F", "H", "I"]) {
+      juego.adivinar(letra);
+    }
+    expect(juego.perdio()).toBe(true);
+  });
+
+  it("una partida nueva no está perdida", () => {
+    expect(new Ahorcado("GATO").perdio()).toBe(false);
+  });
+
+  it("palabra devuelve la palabra secreta", () => {
+    expect(new Ahorcado("GATO").palabra()).toBe("GATO");
+  });
+
+  it("una letra fallada repetida descuenta una sola vida", () => {
+    const juego = new Ahorcado("GATO");
+    juego.adivinar("Z");
+    juego.adivinar("Z");
+    expect(juego.getVidas()).toBe(5);
+  });
 });

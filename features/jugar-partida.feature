@@ -56,3 +56,28 @@ Característica: Jugar partida
             Y arriesgo la letra "O"
             Entonces veo el mensaje "GANASTE"
 
+    Regla: seis fallos hacen perder la partida
+        @CA-06
+        Escenario: Seis fallos muestran PERDISTE y la palabra
+            Dado que abro la aplicación con la palabra "GATO"
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando inicio la partida
+            Y arriesgo la letra "B"
+            Y arriesgo la letra "C"
+            Y arriesgo la letra "D"
+            Y arriesgo la letra "F"
+            Y arriesgo la letra "H"
+            Y arriesgo la letra "I"
+            Entonces veo el mensaje "PERDISTE"
+            Y veo la palabra "GATO"
+
+    Regla: una letra fallada repetida no descuenta otra vida
+        @CA-07
+        Escenario: Repetir una letra fallada no descuenta otra vida
+            Dado que abro la aplicación con la palabra "GATO"
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando inicio la partida
+            Y arriesgo la letra "Z"
+            Y arriesgo la letra "Z"
+            Entonces veo "5" vidas
+
