@@ -1,5 +1,6 @@
 import { FormEvent, useState } from "react";
 import { Ahorcado } from "../domain/ahorcado";
+import { Historial, PartidaResumen } from "../domain/historial";
 import { configurarIntentos, intentosIniciales } from "../domain/intentos";
 import { formatearReloj } from "../domain/reloj";
 
@@ -16,6 +17,8 @@ export function App() {
   const [palabraMostrada, setPalabraMostrada] = useState("");
   const [vidasRestantes, setVidasRestantes] = useState(6);
   const [letra, setLetra] = useState("");
+  const [historial] = useState(() => new Historial());
+  const [partidas, setPartidas] = useState<PartidaResumen[]>([]);
 
   function iniciarPartida() {
     const params = new URLSearchParams(window.location.search);
@@ -28,12 +31,19 @@ export function App() {
 
   function arriesgar(event: FormEvent) {
     event.preventDefault();
-    if (juego && letra.trim()) {
+    if (juego && !juego.gano() && letra.trim()) {
       juego.adivinar(letra.trim());
       setPalabraMostrada(
         juego.perdio() ? juego.palabra() : juego.palabraEnmascarada(),
       );
       setVidasRestantes(juego.getVidas());
+      if (juego.gano()) {
+        historial.registrar({
+          palabra: juego.palabra(),
+          resultado: "GANASTE",
+        });
+        setPartidas(historial.listado());
+      }
     }
     setLetra("");
   }
@@ -203,6 +213,18 @@ export function App() {
           ) : null}
         </section>
       ) : null}
+
+      <section className="card" id="resumen-card">
+        <h2 className="card-title">Resumen de partidas</h2>
+        <div className="resumen-lista">
+          {partidas.map((partida, index) => (
+            <article key={index} data-testid="partida" className="partida-resumen">
+              <span data-testid="resumen-palabra">{partida.palabra}</span>
+              <span data-testid="resumen-resultado">{partida.resultado}</span>
+            </article>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

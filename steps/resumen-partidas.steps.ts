@@ -1,9 +1,9 @@
-import { expect } from "@playwright/test";
+import { expect, Page } from "@playwright/test";
 import { createBdd } from "playwright-bdd";
 
 const { Then } = createBdd();
 
-function getPartida(page: any, posicion: string) {
+function getPartida(page: Page, posicion: string) {
   const index = posicion === "primera" ? 0 : posicion === "segunda" ? 1 : parseInt(posicion, 10) - 1;
   return page.getByTestId("partida").nth(index);
 }
