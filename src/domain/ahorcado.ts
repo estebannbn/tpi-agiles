@@ -1,6 +1,7 @@
 export class Ahorcado {
   private palabraSecreta: string;
   private letrasAdivinadas: Set<string> = new Set();
+  private fallidas: string[] = [];
   private vidas: number;
 
   constructor(palabra: string, vidas = 6) {
@@ -14,6 +15,7 @@ export class Ahorcado {
     this.letrasAdivinadas.add(l);
     if (!this.palabraSecreta.includes(l)) {
       this.vidas--;
+      this.fallidas.push(l);
     }
   }
 
@@ -41,6 +43,6 @@ export class Ahorcado {
   }
 
   letrasFallidas(): string[] {
-    return [];
+    return [...this.fallidas];
   }
 }
