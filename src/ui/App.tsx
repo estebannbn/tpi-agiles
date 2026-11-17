@@ -37,7 +37,7 @@ export function App() {
         juego.perdio() ? juego.palabra() : juego.palabraEnmascarada(),
       );
       setVidasRestantes(juego.getVidas());
-      if (juego.gano() && partidas.length === 0) {
+      if (juego.gano()) {
         historial.registrar({
           palabra: juego.palabra(),
           resultado: "GANASTE",
