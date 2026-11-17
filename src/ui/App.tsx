@@ -41,6 +41,8 @@ export function App() {
         historial.registrar({
           palabra: juego.palabra(),
           resultado: "GANASTE",
+          errores: juego.letrasFallidas().length,
+          fallidas: juego.letrasFallidas().join(" "),
         });
         setPartidas(historial.listado());
       }
@@ -221,6 +223,8 @@ export function App() {
             <article key={index} data-testid="partida" className="partida-resumen">
               <span data-testid="resumen-palabra">{partida.palabra}</span>
               <span data-testid="resumen-resultado">{partida.resultado}</span>
+              <span data-testid="resumen-errores">{partida.errores}</span>
+              <span data-testid="resumen-fallidas">{partida.fallidas}</span>
             </article>
           ))}
         </div>
