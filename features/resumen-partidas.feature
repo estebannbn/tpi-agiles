@@ -32,3 +32,21 @@ Característica: Resumen de partidas
             Y arriesgo la letra "O"
             Entonces en la primera partida del resumen la cantidad de errores es "2"
             Y en la primera partida del resumen las letras fallidas son "Z B"
+
+        @CA-03
+        Escenario: La partida más reciente aparece arriba
+            Dado que abro la aplicación con la palabra "GATO"
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando inicio la partida
+            Y arriesgo la letra "Z"
+            Y arriesgo la letra "G"
+            Y arriesgo la letra "A"
+            Y arriesgo la letra "T"
+            Y arriesgo la letra "O"
+            Y inicio la partida
+            Y arriesgo la letra "G"
+            Y arriesgo la letra "A"
+            Y arriesgo la letra "T"
+            Y arriesgo la letra "O"
+            Entonces en la primera partida del resumen la cantidad de errores es "0"
+            Y en la segunda partida del resumen las letras fallidas son "Z"
