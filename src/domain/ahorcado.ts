@@ -39,4 +39,8 @@ export class Ahorcado {
   palabra(): string {
     return this.palabraSecreta;
   }
+
+  letrasFallidas(): string[] {
+    return [];
+  }
 }
