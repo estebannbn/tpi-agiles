@@ -54,4 +54,12 @@ describe("Ahorcado - Dominio", () => {
     juego.adivinar("Z");
     expect(juego.getVidas()).toBe(5);
   });
+
+  it("letrasFallidas conserva el orden de los errores", () => {
+    const juego = new Ahorcado("GATO");
+    juego.adivinar("Z");
+    juego.adivinar("B");
+    expect(juego.letrasFallidas()).toEqual(["Z", "B"]);
+    expect(juego.letrasFallidas().length).toBe(2);
+  });
 });

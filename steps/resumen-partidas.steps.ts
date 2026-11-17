@@ -15,3 +15,17 @@ Then("en la {word} partida del resumen la palabra es {string}", async ({ page },
 Then("en la {word} partida del resumen el resultado es {string}", async ({ page }, posicion: string, resultado: string) => {
   await expect(getPartida(page, posicion).getByTestId("resumen-resultado")).toHaveText(resultado);
 });
+
+Then(
+  /en la (\w+) partida del resumen (?:la cantidad de errores es|los errores son) "(.*)"/,
+  async ({ page }, posicion: string, errores: string) => {
+    await expect(getPartida(page, posicion).getByTestId("resumen-errores")).toHaveText(errores);
+  }
+);
+
+Then(
+  /en la (\w+) partida del resumen (?:las letras fallidas son|las fallidas son|la letra fallida es) "(.*)"/,
+  async ({ page }, posicion: string, fallidas: string) => {
+    await expect(getPartida(page, posicion).getByTestId("resumen-fallidas")).toHaveText(fallidas);
+  }
+);
