@@ -1,8 +1,25 @@
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, ReactElement, useRef, useState } from "react";
 import { Ahorcado } from "../domain/ahorcado";
+import { partesDelAhorcado } from "../domain/dibujo";
 import { formatearDuracion, Historial, PartidaResumen, tiempoMaximo } from "../domain/historial";
 import { configurarIntentos, intentosIniciales } from "../domain/intentos";
 import { formatearReloj } from "../domain/reloj";
+
+function Partes({ nombre }: { nombre: string }) {
+  const trazo: Record<string, ReactElement> = {
+    cabeza: <circle data-testid="parte-cabeza" cx="120" cy="54" r="18" />,
+    torso: <line data-testid="parte-torso" x1="120" y1="72" x2="120" y2="130" />,
+    "brazo-izquierdo": <line data-testid="parte-brazo-izquierdo" x1="120" y1="88" x2="88" y2="112" />,
+    "brazo-derecho": <line data-testid="parte-brazo-derecho" x1="120" y1="88" x2="152" y2="112" />,
+    "pierna-izquierda": <line data-testid="parte-pierna-izquierda" x1="120" y1="130" x2="96" y2="176" />,
+    "pierna-derecha": <line data-testid="parte-pierna-derecha" x1="120" y1="130" x2="144" y2="176" />,
+    "mano-izquierda": <line data-testid="parte-mano-izquierda" x1="88" y1="112" x2="78" y2="122" />,
+    "mano-derecha": <line data-testid="parte-mano-derecha" x1="152" y1="112" x2="162" y2="122" />,
+    "pie-izquierdo": <line data-testid="parte-pie-izquierdo" x1="96" y1="176" x2="82" y2="176" />,
+    "pie-derecho": <line data-testid="parte-pie-derecho" x1="144" y1="176" x2="158" y2="176" />,
+  };
+  return trazo[nombre] ?? null;
+}
 
 const duraciones = [5, 10, 15];
 const opcionesIntentos = [6, 7, 8, 9, 10];
@@ -191,6 +208,15 @@ export function App() {
         <section className="card" id="tablero-card">
           <h2 className="card-title">Partida</h2>
           <div className="tablero">
+            <svg data-testid="ahorcado" className="ahorcado" viewBox="0 0 200 220" aria-hidden="true">
+              <line x1="20" y1="210" x2="100" y2="210" />
+              <line x1="50" y1="210" x2="50" y2="16" />
+              <line x1="50" y1="16" x2="120" y2="16" />
+              <line x1="120" y1="16" x2="120" y2="36" />
+              {partesDelAhorcado(juego.letrasFallidas().length).map((parte) => (
+                <Partes key={parte} nombre={parte} />
+              ))}
+            </svg>
             <div data-testid="palabra" className="palabra">
               {palabraMostrada}
             </div>

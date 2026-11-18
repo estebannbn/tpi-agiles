@@ -71,6 +71,21 @@ body {
   overflow: hidden;
 }
 
+.ahorcado {
+  width: min(100%, 240px);
+  height: auto;
+  stroke: #f8fafc;
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.tablero {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
 .resumen-lista {
   overflow: auto;
   min-height: 0;
