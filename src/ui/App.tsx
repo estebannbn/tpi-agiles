@@ -268,18 +268,22 @@ export function App() {
       <div className="columna columna-resumen">
       <section className="card" id="resumen-card">
         <h2 className="card-title">Resumen de partidas</h2>
-        <div className="resumen-lista">
-          {partidas.map((partida, index) => (
-            <article key={index} data-testid="partida" className="partida-resumen">
-              <span data-testid="resumen-palabra">{partida.palabra}</span>
-              <span data-testid="resumen-resultado">{partida.resultado}</span>
-              <span data-testid="resumen-errores">{partida.errores}</span>
-              <span data-testid="resumen-fallidas">{partida.fallidas}</span>
-              <span data-testid="resumen-tiempo-maximo">{partida.tiempoMaximo}</span>
-              <span data-testid="resumen-duracion">{partida.duracion}</span>
-            </article>
-          ))}
-        </div>
+        {partidas.length === 0 ? (
+          <p>Todavía no jugaste. Inicia una partida</p>
+        ) : (
+          <div className="resumen-lista">
+            {partidas.map((partida, index) => (
+              <article key={index} data-testid="partida" className="partida-resumen">
+                <span data-testid="resumen-palabra">{partida.palabra}</span>
+                <span data-testid="resumen-resultado">{partida.resultado}</span>
+                <span data-testid="resumen-errores">{partida.errores}</span>
+                <span data-testid="resumen-fallidas">{partida.fallidas}</span>
+                <span data-testid="resumen-tiempo-maximo">{partida.tiempoMaximo}</span>
+                <span data-testid="resumen-duracion">{partida.duracion}</span>
+              </article>
+            ))}
+          </div>
+        )}
       </section>
       </div>
       </div>
