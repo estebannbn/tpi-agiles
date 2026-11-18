@@ -28,6 +28,13 @@ Característica: Configurar partida
             Cuando elijo un tiempo de partida de "15 minutos"
             Entonces veo el reloj en "15:00"
 
+    Regla: al confirmar el nombre quedan 5 minutos
+        @CA-06
+        Escenario: Al confirmar se ven 5 minutos
+            Dado que abro la aplicación
+            Y ingreso el nombre "Ana" y confirmo
+            Entonces veo el reloj en "05:00"
+
     Regla: la partida empieza con 6 intentos
         @CA-02
         Escenario: La partida empieza con 6 intentos
@@ -43,20 +50,35 @@ Característica: Configurar partida
             Cuando elijo "10 intentos"
             Entonces se muestran "10" intentos
 
-    Regla: el reloj descuenta el tiempo elegido
+    Regla: el reloj no corre hasta jugar
         @CA-04
-        Escenario: El reloj avanza al elegir los minutos
+        Escenario: El reloj no corre hasta Jugar
             Dado que abro la aplicación
             Y ingreso el nombre "Ana" y confirmo
             Cuando elijo un tiempo de partida de "10 minutos"
+            Y espero un segundo
+            Entonces veo el reloj en "10:00"
+
+    Regla: al jugar el reloj corre
+        @CA-05
+        Escenario: Al jugar el reloj corre
+            Dado que abro la aplicación
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando elijo un tiempo de partida de "10 minutos"
+            Y inicio la partida
             Entonces el reloj avanza
 
-    Regla: al jugar el reloj vuelve a empezar
-        @CA-05
-        Escenario: Al jugar el reloj vuelve a empezar
-            Dado que abro la aplicación
+    Regla: al terminar el reloj vuelve al tiempo elegido
+        @CA-07
+        Escenario: Al ganar el reloj vuelve a 10:00
+            Dado que abro la aplicación con la palabra "GATO"
             Y ingreso el nombre "Ana" y confirmo
             Cuando elijo un tiempo de partida de "10 minutos"
-            Y el reloj avanza
             Y inicio la partida
-            Entonces el reloj vuelve a "10:00"
+            Y arriesgo la letra "G"
+            Y arriesgo la letra "A"
+            Y arriesgo la letra "T"
+            Y el reloj avanza
+            Y arriesgo la letra "O"
+            Entonces veo el mensaje "GANASTE"
+            Y veo el reloj en "10:00"

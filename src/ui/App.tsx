@@ -44,6 +44,7 @@ export function App() {
   const [error, setError] = useState("");
   const [tiempo, setTiempo] = useState<string | null>(null);
   const [reloj, setReloj] = useState<string | null>(null);
+  const [corriendo, setCorriendo] = useState(false);
   const [minutosElegidos, setMinutosElegidos] = useState(5);
   const [intentos, setIntentos] = useState(intentosIniciales());
   const [juego, setJuego] = useState<Ahorcado | null>(null);
@@ -54,6 +55,7 @@ export function App() {
   const [partidas, setPartidas] = useState<PartidaResumen[]>([]);
   const inicioRef = useRef(Date.now());
   const minutosDePartida = useRef(minutosElegidos);
+  const corriendoRef = useRef(false);
   const mazoRef = useRef<Mazo | null>(null);
 
   function segundosJugados(): number {
@@ -63,18 +65,21 @@ export function App() {
   }
 
   useEffect(() => {
-    if (!tiempo) return;
+    if (!corriendo) return;
     const id = window.setInterval(() => {
+      if (!corriendoRef.current) return;
       const transcurridos = Math.floor((Date.now() - inicioRef.current) / 1000);
       setReloj(tiempoRestante(minutosDePartida.current, transcurridos));
     }, 1000);
     return () => window.clearInterval(id);
-  }, [tiempo]);
+  }, [corriendo]);
 
   function iniciarPartida() {
     inicioRef.current = Date.now();
     minutosDePartida.current = minutosElegidos;
     setReloj(tiempoRestante(minutosElegidos, 0));
+    corriendoRef.current = true;
+    setCorriendo(true);
     const params = new URLSearchParams(window.location.search);
     const wordParam = params.get("word");
     let palabra: string;
@@ -94,25 +99,37 @@ export function App() {
 
   function arriesgar(event: FormEvent) {
     event.preventDefault();
-    if (juego && !juego.gano() && letra.trim()) {
+    if (juego && !juego.gano() && !juego.perdio() && letra.trim()) {
       juego.adivinar(letra.trim());
       setPalabraMostrada(
         juego.perdio() ? juego.palabra() : juego.palabraEnmascarada(),
       );
       setVidasRestantes(juego.getVidas());
-      if (juego.gano()) {
+      if (juego.gano() || juego.perdio()) {
         historial.registrar({
           palabra: juego.palabra(),
-          resultado: "GANASTE",
+          resultado: juego.gano() ? "GANASTE" : "PERDISTE",
           errores: juego.letrasFallidas().length,
           fallidas: juego.letrasFallidas().join(" "),
           tiempoMaximo: tiempoMaximo(minutosElegidos),
           duracion: formatearDuracion(segundosJugados()),
         });
         setPartidas(historial.listado());
+        corriendoRef.current = false;
+        setCorriendo(false);
+        setReloj(formatearReloj(minutosElegidos));
       }
     }
     setLetra("");
+  }
+
+  function volverAJugar() {
+    corriendoRef.current = false;
+    setCorriendo(false);
+    setJuego(null);
+    setLetra("");
+    setPalabraMostrada("");
+    setReloj(formatearReloj(minutosElegidos));
   }
 
   function confirmar(event: FormEvent<HTMLFormElement>) {
@@ -124,6 +141,10 @@ export function App() {
     }
     setError("");
     setJugador(limpio);
+    const marca = formatearReloj(5);
+    setMinutosElegidos(5);
+    setTiempo(marca);
+    setReloj(marca);
   }
 
   return (
@@ -191,8 +212,6 @@ export function App() {
                     const marca = formatearReloj(minutos);
                     setTiempo(marca);
                     setReloj(marca);
-                    inicioRef.current = Date.now();
-                    minutosDePartida.current = minutos;
                   }}
                 />
                 {minutos} minutos
@@ -223,7 +242,7 @@ export function App() {
             </div>
             <span>{intentos} intentos</span>
           </div>
-          {tiempo ? (
+          {tiempo && !juego ? (
             <div className="reloj-container">
               <span className="label">Tiempo restante</span>
               <div id="reloj" data-testid="reloj" className="reloj">
@@ -246,6 +265,15 @@ export function App() {
 
       <div className="columna columna-partida">
       {juego ? (
+        <div className="reloj-partida">
+          <span className="label">Tiempo restante</span>
+          <div id="reloj" data-testid="reloj" className="reloj reloj-grande">
+            {reloj}
+          </div>
+        </div>
+      ) : null}
+      {juego ? (
+        <div className="partida-marco">
         <section className="card" id="tablero-card">
           <h2 className="card-title">Partida</h2>
           <div className="tablero">
@@ -268,7 +296,14 @@ export function App() {
               </span>
             </div>
           </div>
-          <form className="form" onSubmit={arriesgar}>
+          <div data-testid="erradas" className="erradas">
+            {juego.letrasFallidas().map((fallida) => (
+              <span key={fallida} className="errada">
+                {fallida}
+              </span>
+            ))}
+          </div>
+          <form className="form form-letra" onSubmit={arriesgar}>
             <div className="field-group">
               <label htmlFor="letra" className="label">
                 Letra
@@ -282,6 +317,7 @@ export function App() {
                 aria-label="Letra"
                 autoComplete="off"
                 value={letra}
+                disabled={juego.gano() || juego.perdio()}
                 onChange={(event) => setLetra(event.target.value)}
               />
             </div>
@@ -289,20 +325,25 @@ export function App() {
               type="submit"
               className="btn btn-primary"
               id="btn-arriesgar"
+              disabled={juego.gano() || juego.perdio()}
             >
               Arriesgar
             </button>
           </form>
-          {juego.gano() ? (
-            <div data-testid="resultado" className="resultado">
-              GANASTE
-            </div>
-          ) : juego.perdio() ? (
-            <div data-testid="resultado" className="resultado">
-              PERDISTE
-            </div>
-          ) : null}
         </section>
+        {juego.gano() || juego.perdio() ? (
+          <div className="velo">
+            <div className="velo-cartel">
+              <div data-testid="resultado" className="resultado">
+                {juego.gano() ? "GANASTE" : "PERDISTE"}
+              </div>
+              <button type="button" className="btn btn-primary" onClick={volverAJugar}>
+                Volver a jugar
+              </button>
+            </div>
+          </div>
+        ) : null}
+        </div>
       ) : null}
       </div>
 
@@ -315,12 +356,44 @@ export function App() {
           <div className="resumen-lista">
             {partidas.map((partida, index) => (
               <article key={index} data-testid="partida" className="partida-resumen">
-                <span data-testid="resumen-palabra">{partida.palabra}</span>
-                <span data-testid="resumen-resultado">{partida.resultado}</span>
-                <span data-testid="resumen-errores">{partida.errores}</span>
-                <span data-testid="resumen-fallidas">{partida.fallidas}</span>
-                <span data-testid="resumen-tiempo-maximo">{partida.tiempoMaximo}</span>
-                <span data-testid="resumen-duracion">{partida.duracion}</span>
+                <div className="resumen-fila">
+                  <span className="resumen-etiqueta">Palabra</span>
+                  <span data-testid="resumen-palabra">{partida.palabra}</span>
+                </div>
+                <div className="resumen-fila">
+                  <span className="resumen-etiqueta">Resultado</span>
+                  <span
+                    data-testid="resumen-resultado"
+                    className={`resultado-pill ${partida.resultado === "GANASTE" ? "gano" : "perdio"}`}
+                  >
+                    {partida.resultado}
+                  </span>
+                </div>
+                <div className="resumen-fila">
+                  <span className="resumen-etiqueta">Erradas</span>
+                  <span className="resumen-erradas">
+                    <span data-testid="resumen-errores">{partida.errores}</span>
+                    <span data-testid="resumen-fallidas" className="resumen-fallidas">
+                      {(partida.fallidas ?? "")
+                        .split(" ")
+                        .filter(Boolean)
+                        .map((letra, indice) => (
+                          <span key={`${letra}-${indice}`}>
+                            {indice > 0 ? " " : null}
+                            <span className="errada">{letra}</span>
+                          </span>
+                        ))}
+                    </span>
+                  </span>
+                </div>
+                <div className="resumen-fila">
+                  <span className="resumen-etiqueta">Tiempo máximo</span>
+                  <span data-testid="resumen-tiempo-maximo">{partida.tiempoMaximo}</span>
+                </div>
+                <div className="resumen-fila">
+                  <span className="resumen-etiqueta">Duración</span>
+                  <span data-testid="resumen-duracion">{partida.duracion}</span>
+                </div>
               </article>
             ))}
           </div>

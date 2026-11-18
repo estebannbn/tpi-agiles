@@ -15,7 +15,7 @@ Given(
 );
 
 When("inicio la partida", async ({ page }) => {
-  await page.getByRole("button", { name: "Jugar" }).click();
+  await page.getByRole("button", { name: "Jugar", exact: true }).click();
 });
 
 When("arriesgo la letra {string}", async ({ page }, letra: string) => {
@@ -33,5 +33,28 @@ Then("veo {string} vidas", async ({ page }, vidas: string) => {
 
 Then("veo el mensaje {string}", async ({ page }, mensaje: string) => {
   await expect(page.getByTestId("resultado")).toHaveText(mensaje);
+});
+
+Then("veo la errada {string}", async ({ page }, letra: string) => {
+  await expect(page.getByTestId("erradas")).toContainText(letra);
+});
+
+Then("no veo la errada {string}", async ({ page }, letra: string) => {
+  const erradas = page.getByTestId("erradas");
+  await expect(erradas).toBeVisible();
+  await expect(erradas).not.toContainText(letra);
+});
+
+Then("la letra no se puede arriesgar", async ({ page }) => {
+  await expect(page.getByRole("textbox", { name: "Letra" })).toBeDisabled();
+});
+
+When("vuelvo a jugar", async ({ page }) => {
+  await page.getByRole("button", { name: "Volver a jugar" }).click();
+});
+
+Then("no veo la partida", async ({ page }) => {
+  await expect(page.getByTestId("resultado")).toHaveCount(0);
+  await expect(page.getByTestId("palabra")).toHaveCount(0);
 });
 
