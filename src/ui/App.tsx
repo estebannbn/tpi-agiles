@@ -58,6 +58,8 @@ export function App() {
 
   function iniciarPartida() {
     inicioRef.current = Date.now();
+    minutosDePartida.current = minutosElegidos;
+    setReloj(tiempoRestante(minutosElegidos, 0));
     const params = new URLSearchParams(window.location.search);
     const palabra = params.get("word") || "GATO";
     const nuevoJuego = new Ahorcado(palabra, intentos);
