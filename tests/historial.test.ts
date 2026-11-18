@@ -19,4 +19,8 @@ describe("Historial - Dominio", () => {
   it("tiempoMaximo de 10 minutos es 10:00", () => {
     expect(tiempoMaximo(10)).toBe("10:00");
   });
+
+  it("tiempoMaximo de 5 minutos es 05:00", () => {
+    expect(tiempoMaximo(5)).toBe("05:00");
+  });
 });
