@@ -44,6 +44,7 @@ export function App() {
   const [error, setError] = useState("");
   const [tiempo, setTiempo] = useState<string | null>(null);
   const [reloj, setReloj] = useState<string | null>(null);
+  const [corriendo, setCorriendo] = useState(false);
   const [minutosElegidos, setMinutosElegidos] = useState(5);
   const [intentos, setIntentos] = useState(intentosIniciales());
   const [juego, setJuego] = useState<Ahorcado | null>(null);
@@ -63,18 +64,19 @@ export function App() {
   }
 
   useEffect(() => {
-    if (!tiempo) return;
+    if (!corriendo) return;
     const id = window.setInterval(() => {
       const transcurridos = Math.floor((Date.now() - inicioRef.current) / 1000);
       setReloj(tiempoRestante(minutosDePartida.current, transcurridos));
     }, 1000);
     return () => window.clearInterval(id);
-  }, [tiempo]);
+  }, [corriendo]);
 
   function iniciarPartida() {
     inicioRef.current = Date.now();
     minutosDePartida.current = minutosElegidos;
     setReloj(tiempoRestante(minutosElegidos, 0));
+    setCorriendo(true);
     const params = new URLSearchParams(window.location.search);
     const wordParam = params.get("word");
     let palabra: string;
@@ -191,8 +193,6 @@ export function App() {
                     const marca = formatearReloj(minutos);
                     setTiempo(marca);
                     setReloj(marca);
-                    inicioRef.current = Date.now();
-                    minutosDePartida.current = minutos;
                   }}
                 />
                 {minutos} minutos

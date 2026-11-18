@@ -52,12 +52,11 @@ Característica: Configurar partida
             Y espero un segundo
             Entonces veo el reloj en "10:00"
 
-    Regla: al jugar el reloj vuelve a empezar
+    Regla: al jugar el reloj corre
         @CA-05
-        Escenario: Al jugar el reloj vuelve a empezar
+        Escenario: Al jugar el reloj corre
             Dado que abro la aplicación
             Y ingreso el nombre "Ana" y confirmo
             Cuando elijo un tiempo de partida de "10 minutos"
-            Y el reloj avanza
             Y inicio la partida
-            Entonces el reloj vuelve a "10:00"
+            Entonces el reloj avanza
