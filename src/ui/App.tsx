@@ -79,6 +79,8 @@ export function App() {
         <p className="subtitle">Desarrollo Ágil con ATDD & TDD</p>
       </header>
 
+      <div className="layout">
+      <div className="columna columna-config">
       <section className="card" id="registro-card">
         <h2 className="card-title">Registro de Jugador</h2>
         <form id="registro-form" className="form" onSubmit={confirmar}>
@@ -122,6 +124,7 @@ export function App() {
             aria-label="Tiempo de partida"
           >
             <span className="label">Tiempo de partida</span>
+            <div className="opciones">
             {duraciones.map((minutos) => (
               <label className="opcion" key={minutos}>
                 <input
@@ -137,6 +140,7 @@ export function App() {
                 {minutos} minutos
               </label>
             ))}
+            </div>
           </div>
           <div
             className="tiempo-partida"
@@ -144,6 +148,7 @@ export function App() {
             aria-label="Cantidad de intentos"
           >
             <span className="label">Cantidad de intentos</span>
+            <div className="opciones">
             {opcionesIntentos.map((cantidad) => (
               <label className="opcion" key={cantidad}>
                 <input
@@ -157,6 +162,7 @@ export function App() {
                 {cantidad}
               </label>
             ))}
+            </div>
             <span>{intentos} intentos</span>
           </div>
           {tiempo ? (
@@ -178,7 +184,9 @@ export function App() {
           </button>
         </section>
       ) : null}
+      </div>
 
+      <div className="columna columna-partida">
       {juego ? (
         <section className="card" id="tablero-card">
           <h2 className="card-title">Partida</h2>
@@ -229,7 +237,9 @@ export function App() {
           ) : null}
         </section>
       ) : null}
+      </div>
 
+      <div className="columna columna-resumen">
       <section className="card" id="resumen-card">
         <h2 className="card-title">Resumen de partidas</h2>
         <div className="resumen-lista">
@@ -245,6 +255,8 @@ export function App() {
           ))}
         </div>
       </section>
+      </div>
+      </div>
     </div>
   );
 }
