@@ -12,4 +12,11 @@ describe("Mazo - Dominio", () => {
     mazo.sacar();
     expect(mazo.sacar()).toBe("LUNA");
   });
+
+  it("al acabarse el mazo se vuelve a mezclar", () => {
+    const mazo = new Mazo(["SOL", "LUNA"], () => 0);
+    mazo.sacar();
+    mazo.sacar();
+    expect(mazo.sacar()).toBe("SOL");
+  });
 });
