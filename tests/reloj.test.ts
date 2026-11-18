@@ -13,5 +13,9 @@ describe("reloj", () => {
   it("tiempoRestante(10, 1) descuenta un segundo", () => {
     expect(tiempoRestante(10, 1)).toBe("09:59");
   });
+
+  it("tiempoRestante no baja de 00:00", () => {
+    expect(tiempoRestante(1, 90)).toBe("00:00");
+  });
 });
 
