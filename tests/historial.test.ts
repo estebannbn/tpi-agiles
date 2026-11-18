@@ -27,4 +27,8 @@ describe("Historial - Dominio", () => {
   it("formatearDuracion de 90 segundos es 01:30", () => {
     expect(formatearDuracion(90)).toBe("01:30");
   });
+
+  it("formatearDuracion de 45 segundos es 00:45", () => {
+    expect(formatearDuracion(45)).toBe("00:45");
+  });
 });
