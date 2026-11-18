@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { Historial, tiempoMaximo } from "../src/domain/historial";
+import { formatearDuracion, Historial, tiempoMaximo } from "../src/domain/historial";
 
 describe("Historial - Dominio", () => {
   it("el historial guarda la partida ganada", () => {
@@ -22,5 +22,9 @@ describe("Historial - Dominio", () => {
 
   it("tiempoMaximo de 5 minutos es 05:00", () => {
     expect(tiempoMaximo(5)).toBe("05:00");
+  });
+
+  it("formatearDuracion de 90 segundos es 01:30", () => {
+    expect(formatearDuracion(90)).toBe("01:30");
   });
 });

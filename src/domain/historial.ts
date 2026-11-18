@@ -13,6 +13,10 @@ export function tiempoMaximo(minutos: number): string {
   return formatearReloj(minutos);
 }
 
+export function formatearDuracion(_segundos: number): string {
+  return "";
+}
+
 export class Historial {
   private partidas: PartidaResumen[] = [];
 
