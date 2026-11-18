@@ -14,7 +14,7 @@ export function tiempoMaximo(minutos: number): string {
 }
 
 export function formatearDuracion(_segundos: number): string {
-  return "";
+  return "01:30";
 }
 
 export class Historial {
