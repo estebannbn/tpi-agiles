@@ -63,3 +63,15 @@ Característica: Resumen de partidas
             Y arriesgo la letra "T"
             Y arriesgo la letra "O"
             Entonces en la primera partida del resumen el tiempo máximo es "10:00"
+
+    Regla: el resumen muestra la duración de la partida
+        @CA-05
+        Escenario: El resumen muestra la duración de la partida
+            Dado que abro la aplicación con la palabra "GATO" y la duración "90"
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando inicio la partida
+            Y arriesgo la letra "G"
+            Y arriesgo la letra "A"
+            Y arriesgo la letra "T"
+            Y arriesgo la letra "O"
+            Entonces en la primera partida del resumen la duración es "01:30"

@@ -36,3 +36,10 @@ Then(
     await expect(getPartida(page, posicion).getByTestId("resumen-tiempo-maximo")).toHaveText(tiempo);
   },
 );
+
+Then(
+  "en la {word} partida del resumen la duración es {string}",
+  async ({ page }, posicion: string, duracion: string) => {
+    await expect(getPartida(page, posicion).getByTestId("resumen-duracion")).toHaveText(duracion);
+  },
+);
