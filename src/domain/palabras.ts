@@ -19,16 +19,22 @@ function mezclar(palabras: string[], azar: () => number): string[] {
 }
 
 export class Mazo {
-  private pila: string[];
+  private biblioteca: string[];
+  private azar: () => number;
+  private pila: string[] = [];
 
   constructor(
     biblioteca: string[] = BIBLIOTECA,
     azar: () => number = Math.random,
   ) {
-    this.pila = mezclar(biblioteca, azar);
+    this.biblioteca = [...biblioteca];
+    this.azar = azar;
   }
 
   sacar(): string {
+    if (this.pila.length === 0) {
+      this.pila = mezclar(this.biblioteca, this.azar);
+    }
     return this.pila.pop() as string;
   }
 }
