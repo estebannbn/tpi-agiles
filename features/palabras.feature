@@ -14,3 +14,11 @@ Característica: Palabras sin repetir
             Cuando inicio la partida
             Entonces veo la palabra "_ _ _"
             Y no veo la palabra "_ _ _ _"
+
+        @CA-02
+        Escenario: La segunda partida usa la carta siguiente
+            Dado que abro la aplicación con la biblioteca "SOL,LUNA" y azar "0"
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando inicio la partida
+            Y inicio la partida
+            Entonces veo la palabra "_ _ _ _"
