@@ -123,6 +123,15 @@ export function App() {
     setLetra("");
   }
 
+  function volverAJugar() {
+    corriendoRef.current = false;
+    setCorriendo(false);
+    setJuego(null);
+    setLetra("");
+    setPalabraMostrada("");
+    setReloj(formatearReloj(minutosElegidos));
+  }
+
   function confirmar(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const limpio = nombre.trim();
@@ -320,6 +329,9 @@ export function App() {
               <div data-testid="resultado" className="resultado">
                 {juego.gano() ? "GANASTE" : "PERDISTE"}
               </div>
+              <button type="button" className="btn btn-primary" onClick={volverAJugar}>
+                Volver a jugar
+              </button>
             </div>
           </div>
         ) : null}
