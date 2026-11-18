@@ -35,3 +35,13 @@ Then("veo el mensaje {string}", async ({ page }, mensaje: string) => {
   await expect(page.getByTestId("resultado")).toHaveText(mensaje);
 });
 
+Then("veo la errada {string}", async ({ page }, letra: string) => {
+  await expect(page.getByTestId("erradas")).toContainText(letra);
+});
+
+Then("no veo la errada {string}", async ({ page }, letra: string) => {
+  const erradas = page.getByTestId("erradas");
+  await expect(erradas).toBeVisible();
+  await expect(erradas).not.toContainText(letra);
+});
+

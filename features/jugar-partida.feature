@@ -81,3 +81,13 @@ Característica: Jugar partida
             Y arriesgo la letra "Z"
             Entonces veo "5" vidas
 
+    Regla: la partida muestra las letras erradas
+        @CA-08
+        Escenario: La partida muestra la letra errada
+            Dado que abro la aplicación con la palabra "GATO"
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando inicio la partida
+            Y arriesgo la letra "Z"
+            Entonces veo la errada "Z"
+            Y no veo la errada "B"
+
