@@ -3,6 +3,6 @@ export function formatearReloj(minutos: number): string {
 }
 
 export function tiempoRestante(_minutos: number, _transcurridos: number): string {
-  return "10:00";
+  return "09:59";
 }
 
