@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { Historial } from "../src/domain/historial";
+import { formatearDuracion, Historial, tiempoMaximo } from "../src/domain/historial";
 
 describe("Historial - Dominio", () => {
   it("el historial guarda la partida ganada", () => {
@@ -14,5 +14,21 @@ describe("Historial - Dominio", () => {
     historial.registrar({ palabra: "LATA", resultado: "GANASTE" });
     expect(historial.listado()[0].palabra).toBe("LATA");
     expect(historial.listado()[1].palabra).toBe("GATO");
+  });
+
+  it("tiempoMaximo de 10 minutos es 10:00", () => {
+    expect(tiempoMaximo(10)).toBe("10:00");
+  });
+
+  it("tiempoMaximo de 5 minutos es 05:00", () => {
+    expect(tiempoMaximo(5)).toBe("05:00");
+  });
+
+  it("formatearDuracion de 90 segundos es 01:30", () => {
+    expect(formatearDuracion(90)).toBe("01:30");
+  });
+
+  it("formatearDuracion de 45 segundos es 00:45", () => {
+    expect(formatearDuracion(45)).toBe("00:45");
   });
 });
