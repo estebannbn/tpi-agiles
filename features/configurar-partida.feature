@@ -28,6 +28,13 @@ Característica: Configurar partida
             Cuando elijo un tiempo de partida de "15 minutos"
             Entonces veo el reloj en "15:00"
 
+    Regla: al confirmar el nombre quedan 5 minutos
+        @CA-06
+        Escenario: Al confirmar se ven 5 minutos
+            Dado que abro la aplicación
+            Y ingreso el nombre "Ana" y confirmo
+            Entonces veo el reloj en "05:00"
+
     Regla: la partida empieza con 6 intentos
         @CA-02
         Escenario: La partida empieza con 6 intentos
