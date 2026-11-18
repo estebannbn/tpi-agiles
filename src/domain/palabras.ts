@@ -16,6 +16,6 @@ export class Mazo {
   ) {}
 
   sacar(): string {
-    return "GATO";
+    return "SOL";
   }
 }
