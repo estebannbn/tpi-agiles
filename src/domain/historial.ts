@@ -13,8 +13,10 @@ export function tiempoMaximo(minutos: number): string {
   return formatearReloj(minutos);
 }
 
-export function formatearDuracion(_segundos: number): string {
-  return "01:30";
+export function formatearDuracion(segundos: number): string {
+  const minutos = Math.floor(segundos / 60);
+  const resto = segundos % 60;
+  return `${String(minutos).padStart(2, "0")}:${String(resto).padStart(2, "0")}`;
 }
 
 export class Historial {
