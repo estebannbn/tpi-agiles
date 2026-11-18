@@ -242,7 +242,7 @@ export function App() {
             </div>
             <span>{intentos} intentos</span>
           </div>
-          {tiempo ? (
+          {tiempo && !juego ? (
             <div className="reloj-container">
               <span className="label">Tiempo restante</span>
               <div id="reloj" data-testid="reloj" className="reloj">
@@ -264,6 +264,14 @@ export function App() {
       </div>
 
       <div className="columna columna-partida">
+      {juego ? (
+        <div className="reloj-partida">
+          <span className="label">Tiempo restante</span>
+          <div id="reloj" data-testid="reloj" className="reloj reloj-grande">
+            {reloj}
+          </div>
+        </div>
+      ) : null}
       {juego ? (
         <div className="partida-marco">
         <section className="card" id="tablero-card">
@@ -295,7 +303,7 @@ export function App() {
               </span>
             ))}
           </div>
-          <form className="form" onSubmit={arriesgar}>
+          <form className="form form-letra" onSubmit={arriesgar}>
             <div className="field-group">
               <label htmlFor="letra" className="label">
                 Letra
@@ -348,12 +356,44 @@ export function App() {
           <div className="resumen-lista">
             {partidas.map((partida, index) => (
               <article key={index} data-testid="partida" className="partida-resumen">
-                <span data-testid="resumen-palabra">{partida.palabra}</span>
-                <span data-testid="resumen-resultado">{partida.resultado}</span>
-                <span data-testid="resumen-errores">{partida.errores}</span>
-                <span data-testid="resumen-fallidas">{partida.fallidas}</span>
-                <span data-testid="resumen-tiempo-maximo">{partida.tiempoMaximo}</span>
-                <span data-testid="resumen-duracion">{partida.duracion}</span>
+                <div className="resumen-fila">
+                  <span className="resumen-etiqueta">Palabra</span>
+                  <span data-testid="resumen-palabra">{partida.palabra}</span>
+                </div>
+                <div className="resumen-fila">
+                  <span className="resumen-etiqueta">Resultado</span>
+                  <span
+                    data-testid="resumen-resultado"
+                    className={`resultado-pill ${partida.resultado === "GANASTE" ? "gano" : "perdio"}`}
+                  >
+                    {partida.resultado}
+                  </span>
+                </div>
+                <div className="resumen-fila">
+                  <span className="resumen-etiqueta">Erradas</span>
+                  <span className="resumen-erradas">
+                    <span data-testid="resumen-errores">{partida.errores}</span>
+                    <span data-testid="resumen-fallidas" className="resumen-fallidas">
+                      {(partida.fallidas ?? "")
+                        .split(" ")
+                        .filter(Boolean)
+                        .map((letra, indice) => (
+                          <span key={`${letra}-${indice}`}>
+                            {indice > 0 ? " " : null}
+                            <span className="errada">{letra}</span>
+                          </span>
+                        ))}
+                    </span>
+                  </span>
+                </div>
+                <div className="resumen-fila">
+                  <span className="resumen-etiqueta">Tiempo máximo</span>
+                  <span data-testid="resumen-tiempo-maximo">{partida.tiempoMaximo}</span>
+                </div>
+                <div className="resumen-fila">
+                  <span className="resumen-etiqueta">Duración</span>
+                  <span data-testid="resumen-duracion">{partida.duracion}</span>
+                </div>
               </article>
             ))}
           </div>

@@ -15,7 +15,7 @@ Given(
 );
 
 When("inicio la partida", async ({ page }) => {
-  await page.getByRole("button", { name: "Jugar" }).click();
+  await page.getByRole("button", { name: "Jugar", exact: true }).click();
 });
 
 When("arriesgo la letra {string}", async ({ page }, letra: string) => {
