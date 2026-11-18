@@ -96,16 +96,16 @@ export function App() {
 
   function arriesgar(event: FormEvent) {
     event.preventDefault();
-    if (juego && !juego.gano() && letra.trim()) {
+    if (juego && !juego.gano() && !juego.perdio() && letra.trim()) {
       juego.adivinar(letra.trim());
       setPalabraMostrada(
         juego.perdio() ? juego.palabra() : juego.palabraEnmascarada(),
       );
       setVidasRestantes(juego.getVidas());
-      if (juego.gano()) {
+      if (juego.gano() || juego.perdio()) {
         historial.registrar({
           palabra: juego.palabra(),
-          resultado: "GANASTE",
+          resultado: juego.gano() ? "GANASTE" : "PERDISTE",
           errores: juego.letrasFallidas().length,
           fallidas: juego.letrasFallidas().join(" "),
           tiempoMaximo: tiempoMaximo(minutosElegidos),
