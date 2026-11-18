@@ -269,7 +269,7 @@ export function App() {
       <section className="card" id="resumen-card">
         <h2 className="card-title">Resumen de partidas</h2>
         {partidas.length === 0 ? (
-          <p>Todavía no jugaste. Inicia una partida</p>
+          <p className="resumen-vacio">Todavía no jugaste. Inicia una partida</p>
         ) : (
           <div className="resumen-lista">
             {partidas.map((partida, index) => (
