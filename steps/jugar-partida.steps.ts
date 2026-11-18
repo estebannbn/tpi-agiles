@@ -45,3 +45,7 @@ Then("no veo la errada {string}", async ({ page }, letra: string) => {
   await expect(erradas).not.toContainText(letra);
 });
 
+Then("la letra no se puede arriesgar", async ({ page }) => {
+  await expect(page.getByRole("textbox", { name: "Letra" })).toBeDisabled();
+});
+

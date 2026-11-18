@@ -91,3 +91,16 @@ Característica: Jugar partida
             Entonces veo la errada "Z"
             Y no veo la errada "B"
 
+    Regla: al terminar no se puede seguir arriesgando
+        @CA-09
+        Escenario: Al ganar no se puede seguir arriesgando
+            Dado que abro la aplicación con la palabra "GATO"
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando inicio la partida
+            Y arriesgo la letra "G"
+            Y arriesgo la letra "A"
+            Y arriesgo la letra "T"
+            Y arriesgo la letra "O"
+            Entonces veo el mensaje "GANASTE"
+            Y la letra no se puede arriesgar
+
