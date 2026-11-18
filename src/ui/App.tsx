@@ -1,8 +1,25 @@
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Ahorcado } from "../domain/ahorcado";
+import { partesDelAhorcado } from "../domain/dibujo";
 import { formatearDuracion, Historial, PartidaResumen, tiempoMaximo } from "../domain/historial";
 import { configurarIntentos, intentosIniciales } from "../domain/intentos";
-import { formatearReloj } from "../domain/reloj";
+import { formatearReloj, tiempoRestante } from "../domain/reloj";
+
+function Partes({ nombre }: { nombre: string }) {
+  const trazo: Record<string, ReactElement> = {
+    cabeza: <circle data-testid="parte-cabeza" cx="120" cy="54" r="18" />,
+    torso: <line data-testid="parte-torso" x1="120" y1="72" x2="120" y2="130" />,
+    "brazo-izquierdo": <line data-testid="parte-brazo-izquierdo" x1="120" y1="88" x2="88" y2="112" />,
+    "brazo-derecho": <line data-testid="parte-brazo-derecho" x1="120" y1="88" x2="152" y2="112" />,
+    "pierna-izquierda": <line data-testid="parte-pierna-izquierda" x1="120" y1="130" x2="96" y2="176" />,
+    "pierna-derecha": <line data-testid="parte-pierna-derecha" x1="120" y1="130" x2="144" y2="176" />,
+    "mano-izquierda": <line data-testid="parte-mano-izquierda" x1="88" y1="112" x2="78" y2="122" />,
+    "mano-derecha": <line data-testid="parte-mano-derecha" x1="152" y1="112" x2="162" y2="122" />,
+    "pie-izquierdo": <line data-testid="parte-pie-izquierdo" x1="96" y1="176" x2="82" y2="176" />,
+    "pie-derecho": <line data-testid="parte-pie-derecho" x1="144" y1="176" x2="158" y2="176" />,
+  };
+  return trazo[nombre] ?? null;
+}
 
 const duraciones = [5, 10, 15];
 const opcionesIntentos = [6, 7, 8, 9, 10];
@@ -12,6 +29,7 @@ export function App() {
   const [jugador, setJugador] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [tiempo, setTiempo] = useState<string | null>(null);
+  const [reloj, setReloj] = useState<string | null>(null);
   const [minutosElegidos, setMinutosElegidos] = useState(5);
   const [intentos, setIntentos] = useState(intentosIniciales());
   const [juego, setJuego] = useState<Ahorcado | null>(null);
@@ -21,6 +39,7 @@ export function App() {
   const [historial] = useState(() => new Historial());
   const [partidas, setPartidas] = useState<PartidaResumen[]>([]);
   const inicioRef = useRef(Date.now());
+  const minutosDePartida = useRef(minutosElegidos);
 
   function segundosJugados(): number {
     const fija = new URLSearchParams(window.location.search).get("duracion");
@@ -28,8 +47,19 @@ export function App() {
     return Math.floor((Date.now() - inicioRef.current) / 1000);
   }
 
+  useEffect(() => {
+    if (!tiempo) return;
+    const id = window.setInterval(() => {
+      const transcurridos = Math.floor((Date.now() - inicioRef.current) / 1000);
+      setReloj(tiempoRestante(minutosDePartida.current, transcurridos));
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, [tiempo]);
+
   function iniciarPartida() {
     inicioRef.current = Date.now();
+    minutosDePartida.current = minutosElegidos;
+    setReloj(tiempoRestante(minutosElegidos, 0));
     const params = new URLSearchParams(window.location.search);
     const palabra = params.get("word") || "GATO";
     const nuevoJuego = new Ahorcado(palabra, intentos);
@@ -79,6 +109,8 @@ export function App() {
         <p className="subtitle">Desarrollo Ágil con ATDD & TDD</p>
       </header>
 
+      <div className="layout">
+      <div className="columna columna-config">
       <section className="card" id="registro-card">
         <h2 className="card-title">Registro de Jugador</h2>
         <form id="registro-form" className="form" onSubmit={confirmar}>
@@ -122,6 +154,7 @@ export function App() {
             aria-label="Tiempo de partida"
           >
             <span className="label">Tiempo de partida</span>
+            <div className="opciones">
             {duraciones.map((minutos) => (
               <label className="opcion" key={minutos}>
                 <input
@@ -131,12 +164,17 @@ export function App() {
                   checked={tiempo === formatearReloj(minutos)}
                   onChange={() => {
                     setMinutosElegidos(minutos);
-                    setTiempo(formatearReloj(minutos));
+                    const marca = formatearReloj(minutos);
+                    setTiempo(marca);
+                    setReloj(marca);
+                    inicioRef.current = Date.now();
+                    minutosDePartida.current = minutos;
                   }}
                 />
                 {minutos} minutos
               </label>
             ))}
+            </div>
           </div>
           <div
             className="tiempo-partida"
@@ -144,6 +182,7 @@ export function App() {
             aria-label="Cantidad de intentos"
           >
             <span className="label">Cantidad de intentos</span>
+            <div className="opciones">
             {opcionesIntentos.map((cantidad) => (
               <label className="opcion" key={cantidad}>
                 <input
@@ -157,13 +196,14 @@ export function App() {
                 {cantidad}
               </label>
             ))}
+            </div>
             <span>{intentos} intentos</span>
           </div>
           {tiempo ? (
             <div className="reloj-container">
               <span className="label">Tiempo restante</span>
               <div id="reloj" data-testid="reloj" className="reloj">
-                {tiempo}
+                {reloj}
               </div>
             </div>
           ) : null}
@@ -178,11 +218,22 @@ export function App() {
           </button>
         </section>
       ) : null}
+      </div>
 
+      <div className="columna columna-partida">
       {juego ? (
         <section className="card" id="tablero-card">
           <h2 className="card-title">Partida</h2>
           <div className="tablero">
+            <svg data-testid="ahorcado" className="ahorcado" viewBox="0 0 200 220" aria-hidden="true">
+              <line x1="20" y1="210" x2="100" y2="210" />
+              <line x1="50" y1="210" x2="50" y2="16" />
+              <line x1="50" y1="16" x2="120" y2="16" />
+              <line x1="120" y1="16" x2="120" y2="36" />
+              {partesDelAhorcado(juego.letrasFallidas().length).map((parte) => (
+                <Partes key={parte} nombre={parte} />
+              ))}
+            </svg>
             <div data-testid="palabra" className="palabra">
               {palabraMostrada}
             </div>
@@ -229,22 +280,30 @@ export function App() {
           ) : null}
         </section>
       ) : null}
+      </div>
 
+      <div className="columna columna-resumen">
       <section className="card" id="resumen-card">
         <h2 className="card-title">Resumen de partidas</h2>
-        <div className="resumen-lista">
-          {partidas.map((partida, index) => (
-            <article key={index} data-testid="partida" className="partida-resumen">
-              <span data-testid="resumen-palabra">{partida.palabra}</span>
-              <span data-testid="resumen-resultado">{partida.resultado}</span>
-              <span data-testid="resumen-errores">{partida.errores}</span>
-              <span data-testid="resumen-fallidas">{partida.fallidas}</span>
-              <span data-testid="resumen-tiempo-maximo">{partida.tiempoMaximo}</span>
-              <span data-testid="resumen-duracion">{partida.duracion}</span>
-            </article>
-          ))}
-        </div>
+        {partidas.length === 0 ? (
+          <p className="resumen-vacio">Todavía no jugaste. Inicia una partida</p>
+        ) : (
+          <div className="resumen-lista">
+            {partidas.map((partida, index) => (
+              <article key={index} data-testid="partida" className="partida-resumen">
+                <span data-testid="resumen-palabra">{partida.palabra}</span>
+                <span data-testid="resumen-resultado">{partida.resultado}</span>
+                <span data-testid="resumen-errores">{partida.errores}</span>
+                <span data-testid="resumen-fallidas">{partida.fallidas}</span>
+                <span data-testid="resumen-tiempo-maximo">{partida.tiempoMaximo}</span>
+                <span data-testid="resumen-duracion">{partida.duracion}</span>
+              </article>
+            ))}
+          </div>
+        )}
       </section>
+      </div>
+      </div>
     </div>
   );
 }

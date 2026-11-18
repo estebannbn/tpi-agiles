@@ -43,3 +43,7 @@ Then(
     await expect(getPartida(page, posicion).getByTestId("resumen-duracion")).toHaveText(duracion);
   },
 );
+
+Then("el resumen dice {string}", async ({ page }, texto: string) => {
+  await expect(page.locator("#resumen-card")).toContainText(texto);
+});

@@ -75,3 +75,9 @@ Característica: Resumen de partidas
             Y arriesgo la letra "T"
             Y arriesgo la letra "O"
             Entonces en la primera partida del resumen la duración es "01:30"
+
+    Regla: si no hay partidas el resumen lo indica
+        @CA-06
+        Escenario: Sin partidas el resumen avisa
+            Dado que abro la aplicación
+            Entonces el resumen dice "Todavía no jugaste. Inicia una partida"

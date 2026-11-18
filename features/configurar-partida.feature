@@ -42,3 +42,21 @@ Característica: Configurar partida
             Y ingreso el nombre "Ana" y confirmo
             Cuando elijo "10 intentos"
             Entonces se muestran "10" intentos
+
+    Regla: el reloj descuenta el tiempo elegido
+        @CA-04
+        Escenario: El reloj avanza al elegir los minutos
+            Dado que abro la aplicación
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando elijo un tiempo de partida de "10 minutos"
+            Entonces el reloj avanza
+
+    Regla: al jugar el reloj vuelve a empezar
+        @CA-05
+        Escenario: Al jugar el reloj vuelve a empezar
+            Dado que abro la aplicación
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando elijo un tiempo de partida de "10 minutos"
+            Y el reloj avanza
+            Y inicio la partida
+            Entonces el reloj vuelve a "10:00"

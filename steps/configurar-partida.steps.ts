@@ -24,6 +24,14 @@ Then("veo el reloj en {string}", async ({ page }, tiempo: string) => {
   await expect(page.getByTestId("reloj")).toHaveText(tiempo);
 });
 
+Then("el reloj avanza", async ({ page }) => {
+  await expect(page.getByTestId("reloj")).not.toHaveText("10:00", { timeout: 3000 });
+});
+
+Then("el reloj vuelve a {string}", async ({ page }, tiempo: string) => {
+  await expect(page.getByTestId("reloj")).toHaveText(tiempo, { timeout: 400 });
+});
+
 Then("se muestran {string} intentos", async ({ page }, cantidad: string) => {
   await expect(page.getByText(`${cantidad} intentos`)).toBeVisible();
 });
