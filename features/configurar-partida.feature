@@ -67,3 +67,18 @@ Característica: Configurar partida
             Cuando elijo un tiempo de partida de "10 minutos"
             Y inicio la partida
             Entonces el reloj avanza
+
+    Regla: al terminar el reloj vuelve al tiempo elegido
+        @CA-07
+        Escenario: Al ganar el reloj vuelve a 10:00
+            Dado que abro la aplicación con la palabra "GATO"
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando elijo un tiempo de partida de "10 minutos"
+            Y inicio la partida
+            Y arriesgo la letra "G"
+            Y arriesgo la letra "A"
+            Y arriesgo la letra "T"
+            Y el reloj avanza
+            Y arriesgo la letra "O"
+            Entonces veo el mensaje "GANASTE"
+            Y veo el reloj en "10:00"
