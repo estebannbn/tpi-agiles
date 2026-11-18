@@ -272,6 +272,13 @@ export function App() {
               </span>
             </div>
           </div>
+          <div data-testid="erradas" className="erradas">
+            {juego.letrasFallidas().map((fallida) => (
+              <span key={fallida} className="errada">
+                {fallida}
+              </span>
+            ))}
+          </div>
           <form className="form" onSubmit={arriesgar}>
             <div className="field-group">
               <label htmlFor="letra" className="label">
