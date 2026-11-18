@@ -81,3 +81,18 @@ Característica: Resumen de partidas
         Escenario: Sin partidas el resumen avisa
             Dado que abro la aplicación
             Entonces el resumen dice "Todavía no jugaste. Inicia una partida"
+
+    Regla: el resumen guarda la derrota
+        @CA-07
+        Escenario: Al perder se ve la palabra y PERDISTE
+            Dado que abro la aplicación con la palabra "GATO"
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando inicio la partida
+            Y arriesgo la letra "B"
+            Y arriesgo la letra "C"
+            Y arriesgo la letra "D"
+            Y arriesgo la letra "F"
+            Y arriesgo la letra "H"
+            Y arriesgo la letra "I"
+            Entonces en la primera partida del resumen la palabra es "GATO"
+            Y en la primera partida del resumen el resultado es "PERDISTE"

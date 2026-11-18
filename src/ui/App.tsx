@@ -44,6 +44,7 @@ export function App() {
   const [error, setError] = useState("");
   const [tiempo, setTiempo] = useState<string | null>(null);
   const [reloj, setReloj] = useState<string | null>(null);
+  const [corriendo, setCorriendo] = useState(false);
   const [minutosElegidos, setMinutosElegidos] = useState(5);
   const [intentos, setIntentos] = useState(intentosIniciales());
   const [juego, setJuego] = useState<Ahorcado | null>(null);
@@ -54,6 +55,7 @@ export function App() {
   const [partidas, setPartidas] = useState<PartidaResumen[]>([]);
   const inicioRef = useRef(Date.now());
   const minutosDePartida = useRef(minutosElegidos);
+  const corriendoRef = useRef(false);
   const mazoRef = useRef<Mazo | null>(null);
 
   function segundosJugados(): number {
@@ -63,18 +65,21 @@ export function App() {
   }
 
   useEffect(() => {
-    if (!tiempo) return;
+    if (!corriendo) return;
     const id = window.setInterval(() => {
+      if (!corriendoRef.current) return;
       const transcurridos = Math.floor((Date.now() - inicioRef.current) / 1000);
       setReloj(tiempoRestante(minutosDePartida.current, transcurridos));
     }, 1000);
     return () => window.clearInterval(id);
-  }, [tiempo]);
+  }, [corriendo]);
 
   function iniciarPartida() {
     inicioRef.current = Date.now();
     minutosDePartida.current = minutosElegidos;
     setReloj(tiempoRestante(minutosElegidos, 0));
+    corriendoRef.current = true;
+    setCorriendo(true);
     const params = new URLSearchParams(window.location.search);
     const wordParam = params.get("word");
     let palabra: string;
@@ -94,25 +99,37 @@ export function App() {
 
   function arriesgar(event: FormEvent) {
     event.preventDefault();
-    if (juego && !juego.gano() && letra.trim()) {
+    if (juego && !juego.gano() && !juego.perdio() && letra.trim()) {
       juego.adivinar(letra.trim());
       setPalabraMostrada(
         juego.perdio() ? juego.palabra() : juego.palabraEnmascarada(),
       );
       setVidasRestantes(juego.getVidas());
-      if (juego.gano()) {
+      if (juego.gano() || juego.perdio()) {
         historial.registrar({
           palabra: juego.palabra(),
-          resultado: "GANASTE",
+          resultado: juego.gano() ? "GANASTE" : "PERDISTE",
           errores: juego.letrasFallidas().length,
           fallidas: juego.letrasFallidas().join(" "),
           tiempoMaximo: tiempoMaximo(minutosElegidos),
           duracion: formatearDuracion(segundosJugados()),
         });
         setPartidas(historial.listado());
+        corriendoRef.current = false;
+        setCorriendo(false);
+        setReloj(formatearReloj(minutosElegidos));
       }
     }
     setLetra("");
+  }
+
+  function volverAJugar() {
+    corriendoRef.current = false;
+    setCorriendo(false);
+    setJuego(null);
+    setLetra("");
+    setPalabraMostrada("");
+    setReloj(formatearReloj(minutosElegidos));
   }
 
   function confirmar(event: FormEvent<HTMLFormElement>) {
@@ -124,6 +141,10 @@ export function App() {
     }
     setError("");
     setJugador(limpio);
+    const marca = formatearReloj(5);
+    setMinutosElegidos(5);
+    setTiempo(marca);
+    setReloj(marca);
   }
 
   return (
@@ -134,14 +155,79 @@ export function App() {
       </header>
 
       <div className="layout">
-        <div className="columna columna-config">
-          <section className="card" id="registro-card">
-            <h2 className="card-title">Registro de Jugador</h2>
-            <form id="registro-form" className="form" onSubmit={confirmar}>
-              <div className="field-group">
-                <label htmlFor="nombre" className="label">
-                  Nombre del Jugador
-                </label>
+      <div className="columna columna-config">
+      <section className="card" id="registro-card">
+        <h2 className="card-title">Registro de Jugador</h2>
+        <form id="registro-form" className="form" onSubmit={confirmar}>
+          <div className="field-group">
+            <label htmlFor="nombre" className="label">
+              Nombre del Jugador
+            </label>
+            <input
+              id="nombre"
+              name="nombre"
+              type="text"
+              className="input"
+              placeholder="Ingresa tu nombre..."
+              autoComplete="off"
+              value={nombre}
+              onChange={(event) => setNombre(event.target.value)}
+            />
+          </div>
+          <button type="submit" className="btn btn-primary" id="btn-confirmar">
+            Confirmar
+          </button>
+        </form>
+        {error ? (
+          <div id="mensaje-error" className="error-message" role="alert">
+            {error}
+          </div>
+        ) : null}
+      </section>
+
+      {jugador ? (
+        <section className="card" id="jugador-card">
+          <div className="welcome-box">
+            <span className="badge">Jugador Activo</span>
+            <h2 id="jugador-nombre" className="player-heading">
+              {jugador}
+            </h2>
+          </div>
+          <div
+            className="tiempo-partida"
+            role="radiogroup"
+            aria-label="Tiempo de partida"
+          >
+            <span className="label">Tiempo de partida</span>
+            <div className="opciones">
+            {duraciones.map((minutos) => (
+              <label className="opcion" key={minutos}>
+                <input
+                  type="radio"
+                  name="tiempo-partida"
+                  value={`${minutos} minutos`}
+                  checked={tiempo === formatearReloj(minutos)}
+                  onChange={() => {
+                    setMinutosElegidos(minutos);
+                    const marca = formatearReloj(minutos);
+                    setTiempo(marca);
+                    setReloj(marca);
+                  }}
+                />
+                {minutos} minutos
+              </label>
+            ))}
+            </div>
+          </div>
+          <div
+            className="tiempo-partida"
+            role="group"
+            aria-label="Cantidad de intentos"
+          >
+            <span className="label">Cantidad de intentos</span>
+            <div className="opciones">
+            {opcionesIntentos.map((cantidad) => (
+              <label className="opcion" key={cantidad}>
                 <input
                   id="nombre"
                   name="nombre"
@@ -152,6 +238,17 @@ export function App() {
                   value={nombre}
                   onChange={(event) => setNombre(event.target.value)}
                 />
+                {cantidad}
+              </label>
+            ))}
+            </div>
+            <span>{intentos} intentos</span>
+          </div>
+          {tiempo && !juego ? (
+            <div className="reloj-container">
+              <span className="label">Tiempo restante</span>
+              <div id="reloj" data-testid="reloj" className="reloj">
+                {reloj}
               </div>
               <button type="submit" className="btn btn-primary" id="btn-confirmar">
                 Confirmar

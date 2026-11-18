@@ -20,6 +20,10 @@ When("elijo {string}", async ({ page }, opcion: string) => {
     .check();
 });
 
+When("espero un segundo", async ({ page }) => {
+  await page.waitForTimeout(1100);
+});
+
 Then("veo el reloj en {string}", async ({ page }, tiempo: string) => {
   await expect(page.getByTestId("reloj")).toHaveText(tiempo);
 });
