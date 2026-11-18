@@ -8,7 +8,7 @@ export interface PartidaResumen {
 }
 
 export function tiempoMaximo(_minutos: number): string {
-  return "";
+  return "10:00";
 }
 
 export class Historial {
