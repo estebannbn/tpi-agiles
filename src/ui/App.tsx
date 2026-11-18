@@ -81,7 +81,9 @@ export function App() {
     if (wordParam) {
       palabra = wordParam;
     } else {
-      mazoRef.current = crearMazo(params);
+      if (!mazoRef.current) {
+        mazoRef.current = crearMazo(params);
+      }
       palabra = mazoRef.current.sacar();
     }
     const nuevoJuego = new Ahorcado(palabra, intentos);
