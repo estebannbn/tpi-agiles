@@ -95,6 +95,34 @@ body {
   line-height: 1.4;
 }
 
+.partida-marco {
+  position: relative;
+}
+
+.velo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.72);
+  border-radius: 1rem;
+}
+
+.velo-cartel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  padding: 1.5rem 2rem;
+  text-align: center;
+}
+
+.resultado {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
 .resumen-lista {
   overflow: auto;
   min-height: 0;

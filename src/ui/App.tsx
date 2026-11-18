@@ -250,6 +250,7 @@ export function App() {
 
       <div className="columna columna-partida">
       {juego ? (
+        <div className="partida-marco">
         <section className="card" id="tablero-card">
           <h2 className="card-title">Partida</h2>
           <div className="tablero">
@@ -293,6 +294,7 @@ export function App() {
                 aria-label="Letra"
                 autoComplete="off"
                 value={letra}
+                disabled={juego.gano() || juego.perdio()}
                 onChange={(event) => setLetra(event.target.value)}
               />
             </div>
@@ -300,20 +302,22 @@ export function App() {
               type="submit"
               className="btn btn-primary"
               id="btn-arriesgar"
+              disabled={juego.gano() || juego.perdio()}
             >
               Arriesgar
             </button>
           </form>
-          {juego.gano() ? (
-            <div data-testid="resultado" className="resultado">
-              GANASTE
-            </div>
-          ) : juego.perdio() ? (
-            <div data-testid="resultado" className="resultado">
-              PERDISTE
-            </div>
-          ) : null}
         </section>
+        {juego.gano() || juego.perdio() ? (
+          <div className="velo">
+            <div className="velo-cartel">
+              <div data-testid="resultado" className="resultado">
+                {juego.gano() ? "GANASTE" : "PERDISTE"}
+              </div>
+            </div>
+          </div>
+        ) : null}
+        </div>
       ) : null}
       </div>
 
