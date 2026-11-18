@@ -1,6 +1,6 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { Ahorcado } from "../domain/ahorcado";
-import { Historial, PartidaResumen, tiempoMaximo } from "../domain/historial";
+import { formatearDuracion, Historial, PartidaResumen, tiempoMaximo } from "../domain/historial";
 import { configurarIntentos, intentosIniciales } from "../domain/intentos";
 import { formatearReloj } from "../domain/reloj";
 
@@ -20,8 +20,16 @@ export function App() {
   const [letra, setLetra] = useState("");
   const [historial] = useState(() => new Historial());
   const [partidas, setPartidas] = useState<PartidaResumen[]>([]);
+  const inicioRef = useRef(Date.now());
+
+  function segundosJugados(): number {
+    const fija = new URLSearchParams(window.location.search).get("duracion");
+    if (fija !== null && fija !== "") return Number(fija);
+    return Math.floor((Date.now() - inicioRef.current) / 1000);
+  }
 
   function iniciarPartida() {
+    inicioRef.current = Date.now();
     const params = new URLSearchParams(window.location.search);
     const palabra = params.get("word") || "GATO";
     const nuevoJuego = new Ahorcado(palabra, intentos);
@@ -45,6 +53,7 @@ export function App() {
           errores: juego.letrasFallidas().length,
           fallidas: juego.letrasFallidas().join(" "),
           tiempoMaximo: tiempoMaximo(minutosElegidos),
+          duracion: formatearDuracion(segundosJugados()),
         });
         setPartidas(historial.listado());
       }
@@ -231,6 +240,7 @@ export function App() {
               <span data-testid="resumen-errores">{partida.errores}</span>
               <span data-testid="resumen-fallidas">{partida.fallidas}</span>
               <span data-testid="resumen-tiempo-maximo">{partida.tiempoMaximo}</span>
+              <span data-testid="resumen-duracion">{partida.duracion}</span>
             </article>
           ))}
         </div>
