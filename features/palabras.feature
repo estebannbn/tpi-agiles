@@ -22,3 +22,12 @@ Característica: Palabras sin repetir
             Cuando inicio la partida
             Y inicio la partida
             Entonces veo la palabra "_ _ _ _"
+
+        @CA-03
+        Escenario: La tercera partida vuelve a mezclar
+            Dado que abro la aplicación con la biblioteca "SOL,LUNA" y azar "0"
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando inicio la partida
+            Y inicio la partida
+            Y inicio la partida
+            Entonces veo la palabra "_ _ _"
