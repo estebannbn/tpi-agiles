@@ -7,6 +7,10 @@ export interface PartidaResumen {
   duracion?: string;
 }
 
+export function tiempoMaximo(_minutos: number): string {
+  return "";
+}
+
 export class Historial {
   private partidas: PartidaResumen[] = [];
 
