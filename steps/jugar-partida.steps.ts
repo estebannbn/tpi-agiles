@@ -49,3 +49,12 @@ Then("la letra no se puede arriesgar", async ({ page }) => {
   await expect(page.getByRole("textbox", { name: "Letra" })).toBeDisabled();
 });
 
+When("vuelvo a jugar", async ({ page }) => {
+  await page.getByRole("button", { name: "Volver a jugar" }).click();
+});
+
+Then("no veo la partida", async ({ page }) => {
+  await expect(page.getByTestId("resultado")).toHaveCount(0);
+  await expect(page.getByTestId("palabra")).toHaveCount(0);
+});
+

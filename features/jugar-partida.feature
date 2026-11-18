@@ -104,3 +104,20 @@ Característica: Jugar partida
             Entonces veo el mensaje "GANASTE"
             Y la letra no se puede arriesgar
 
+    Regla: volver a jugar abre otra partida
+        @CA-10
+        Escenario: Volver a jugar abre otra partida
+            Dado que abro la aplicación con la palabra "GATO"
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando inicio la partida
+            Y arriesgo la letra "G"
+            Y arriesgo la letra "A"
+            Y arriesgo la letra "T"
+            Y arriesgo la letra "O"
+            Entonces veo el mensaje "GANASTE"
+            Cuando vuelvo a jugar
+            Entonces no veo la partida
+            Y se muestra el nombre "Ana"
+            Cuando inicio la partida
+            Entonces veo la palabra "_ _ _ _"
+
