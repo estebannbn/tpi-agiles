@@ -55,6 +55,7 @@ export function App() {
   const [partidas, setPartidas] = useState<PartidaResumen[]>([]);
   const inicioRef = useRef(Date.now());
   const minutosDePartida = useRef(minutosElegidos);
+  const corriendoRef = useRef(false);
   const mazoRef = useRef<Mazo | null>(null);
 
   function segundosJugados(): number {
@@ -66,6 +67,7 @@ export function App() {
   useEffect(() => {
     if (!corriendo) return;
     const id = window.setInterval(() => {
+      if (!corriendoRef.current) return;
       const transcurridos = Math.floor((Date.now() - inicioRef.current) / 1000);
       setReloj(tiempoRestante(minutosDePartida.current, transcurridos));
     }, 1000);
@@ -76,6 +78,7 @@ export function App() {
     inicioRef.current = Date.now();
     minutosDePartida.current = minutosElegidos;
     setReloj(tiempoRestante(minutosElegidos, 0));
+    corriendoRef.current = true;
     setCorriendo(true);
     const params = new URLSearchParams(window.location.search);
     const wordParam = params.get("word");
@@ -112,6 +115,9 @@ export function App() {
           duracion: formatearDuracion(segundosJugados()),
         });
         setPartidas(historial.listado());
+        corriendoRef.current = false;
+        setCorriendo(false);
+        setReloj(formatearReloj(minutosElegidos));
       }
     }
     setLetra("");
