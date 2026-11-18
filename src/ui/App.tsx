@@ -150,7 +150,7 @@ export function App() {
   return (
     <div className="game-container">
       <header className="header">
-        <h1 className="title">Juego del Ahorcado</h1>
+        <h1 className="title">Ahorcado game</h1>
         <p className="subtitle">Desarrollo Ágil con ATDD & TDD</p>
       </header>
 
