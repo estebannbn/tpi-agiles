@@ -3,7 +3,21 @@ import { Ahorcado } from "../domain/ahorcado";
 import { partesDelAhorcado } from "../domain/dibujo";
 import { formatearDuracion, Historial, PartidaResumen, tiempoMaximo } from "../domain/historial";
 import { configurarIntentos, intentosIniciales } from "../domain/intentos";
+import { BIBLIOTECA, Mazo } from "../domain/palabras";
 import { formatearReloj, tiempoRestante } from "../domain/reloj";
+
+function crearMazo(params: URLSearchParams): Mazo {
+  const bibParam = params.get("biblioteca");
+  const biblioteca = bibParam
+    ? bibParam.split(",").map((p) => p.trim()).filter(Boolean)
+    : BIBLIOTECA;
+  const azarParam = params.get("azar");
+  const azar =
+    azarParam !== null && azarParam !== ""
+      ? () => Number(azarParam)
+      : Math.random;
+  return new Mazo(biblioteca, azar);
+}
 
 function Partes({ nombre }: { nombre: string }) {
   const trazo: Record<string, ReactElement> = {
@@ -40,6 +54,7 @@ export function App() {
   const [partidas, setPartidas] = useState<PartidaResumen[]>([]);
   const inicioRef = useRef(Date.now());
   const minutosDePartida = useRef(minutosElegidos);
+  const mazoRef = useRef<Mazo | null>(null);
 
   function segundosJugados(): number {
     const fija = new URLSearchParams(window.location.search).get("duracion");
@@ -61,7 +76,14 @@ export function App() {
     minutosDePartida.current = minutosElegidos;
     setReloj(tiempoRestante(minutosElegidos, 0));
     const params = new URLSearchParams(window.location.search);
-    const palabra = params.get("word") || "GATO";
+    const wordParam = params.get("word");
+    let palabra: string;
+    if (wordParam) {
+      palabra = wordParam;
+    } else {
+      mazoRef.current = crearMazo(params);
+      palabra = mazoRef.current.sacar();
+    }
     const nuevoJuego = new Ahorcado(palabra, intentos);
     setJuego(nuevoJuego);
     setPalabraMostrada(nuevoJuego.palabraEnmascarada());
