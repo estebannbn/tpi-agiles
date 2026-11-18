@@ -126,6 +126,10 @@ export function App() {
     }
     setError("");
     setJugador(limpio);
+    const marca = formatearReloj(5);
+    setMinutosElegidos(5);
+    setTiempo(marca);
+    setReloj(marca);
   }
 
   return (
