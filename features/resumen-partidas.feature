@@ -50,3 +50,16 @@ Característica: Resumen de partidas
             Y arriesgo la letra "O"
             Entonces en la primera partida del resumen la cantidad de errores es "0"
             Y en la segunda partida del resumen las letras fallidas son "Z"
+
+    Regla: el resumen muestra el tiempo máximo elegido
+        @CA-04
+        Escenario: El resumen muestra el tiempo máximo elegido
+            Dado que abro la aplicación con la palabra "GATO"
+            Y ingreso el nombre "Ana" y confirmo
+            Cuando elijo un tiempo de partida de "10 minutos"
+            Y inicio la partida
+            Y arriesgo la letra "G"
+            Y arriesgo la letra "A"
+            Y arriesgo la letra "T"
+            Y arriesgo la letra "O"
+            Entonces en la primera partida del resumen el tiempo máximo es "10:00"
