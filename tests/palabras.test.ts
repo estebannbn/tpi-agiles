@@ -6,4 +6,10 @@ describe("Mazo - Dominio", () => {
     const mazo = new Mazo(["SOL", "LUNA"], () => 0);
     expect(mazo.sacar()).toBe("SOL");
   });
+
+  it("el segundo sacar es LUNA", () => {
+    const mazo = new Mazo(["SOL", "LUNA"], () => 0);
+    mazo.sacar();
+    expect(mazo.sacar()).toBe("LUNA");
+  });
 });
