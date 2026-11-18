@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { Ahorcado } from "../domain/ahorcado";
-import { Historial, PartidaResumen } from "../domain/historial";
+import { Historial, PartidaResumen, tiempoMaximo } from "../domain/historial";
 import { configurarIntentos, intentosIniciales } from "../domain/intentos";
 import { formatearReloj } from "../domain/reloj";
 
@@ -12,6 +12,7 @@ export function App() {
   const [jugador, setJugador] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [tiempo, setTiempo] = useState<string | null>(null);
+  const [minutosElegidos, setMinutosElegidos] = useState(5);
   const [intentos, setIntentos] = useState(intentosIniciales());
   const [juego, setJuego] = useState<Ahorcado | null>(null);
   const [palabraMostrada, setPalabraMostrada] = useState("");
@@ -43,6 +44,7 @@ export function App() {
           resultado: "GANASTE",
           errores: juego.letrasFallidas().length,
           fallidas: juego.letrasFallidas().join(" "),
+          tiempoMaximo: tiempoMaximo(minutosElegidos),
         });
         setPartidas(historial.listado());
       }
@@ -118,7 +120,10 @@ export function App() {
                   name="tiempo-partida"
                   value={`${minutos} minutos`}
                   checked={tiempo === formatearReloj(minutos)}
-                  onChange={() => setTiempo(formatearReloj(minutos))}
+                  onChange={() => {
+                    setMinutosElegidos(minutos);
+                    setTiempo(formatearReloj(minutos));
+                  }}
                 />
                 {minutos} minutos
               </label>
@@ -225,6 +230,7 @@ export function App() {
               <span data-testid="resumen-resultado">{partida.resultado}</span>
               <span data-testid="resumen-errores">{partida.errores}</span>
               <span data-testid="resumen-fallidas">{partida.fallidas}</span>
+              <span data-testid="resumen-tiempo-maximo">{partida.tiempoMaximo}</span>
             </article>
           ))}
         </div>
