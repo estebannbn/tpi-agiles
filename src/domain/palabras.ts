@@ -9,13 +9,26 @@ export const BIBLIOTECA = [
   "ARBOL",
 ];
 
+function mezclar(palabras: string[], azar: () => number): string[] {
+  const copia = [...palabras];
+  for (let i = copia.length - 1; i > 0; i--) {
+    const j = Math.floor(azar() * (i + 1));
+    [copia[i], copia[j]] = [copia[j], copia[i]];
+  }
+  return copia;
+}
+
 export class Mazo {
+  private pila: string[];
+
   constructor(
-    _biblioteca: string[] = BIBLIOTECA,
-    _azar: () => number = Math.random,
-  ) {}
+    biblioteca: string[] = BIBLIOTECA,
+    azar: () => number = Math.random,
+  ) {
+    this.pila = mezclar(biblioteca, azar);
+  }
 
   sacar(): string {
-    return "SOL";
+    return this.pila.pop() as string;
   }
 }
