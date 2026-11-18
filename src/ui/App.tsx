@@ -1,9 +1,9 @@
-import { FormEvent, ReactElement, useRef, useState } from "react";
+import { FormEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Ahorcado } from "../domain/ahorcado";
 import { partesDelAhorcado } from "../domain/dibujo";
 import { formatearDuracion, Historial, PartidaResumen, tiempoMaximo } from "../domain/historial";
 import { configurarIntentos, intentosIniciales } from "../domain/intentos";
-import { formatearReloj } from "../domain/reloj";
+import { formatearReloj, tiempoRestante } from "../domain/reloj";
 
 function Partes({ nombre }: { nombre: string }) {
   const trazo: Record<string, ReactElement> = {
@@ -29,6 +29,7 @@ export function App() {
   const [jugador, setJugador] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [tiempo, setTiempo] = useState<string | null>(null);
+  const [reloj, setReloj] = useState<string | null>(null);
   const [minutosElegidos, setMinutosElegidos] = useState(5);
   const [intentos, setIntentos] = useState(intentosIniciales());
   const [juego, setJuego] = useState<Ahorcado | null>(null);
@@ -38,12 +39,22 @@ export function App() {
   const [historial] = useState(() => new Historial());
   const [partidas, setPartidas] = useState<PartidaResumen[]>([]);
   const inicioRef = useRef(Date.now());
+  const minutosDePartida = useRef(minutosElegidos);
 
   function segundosJugados(): number {
     const fija = new URLSearchParams(window.location.search).get("duracion");
     if (fija !== null && fija !== "") return Number(fija);
     return Math.floor((Date.now() - inicioRef.current) / 1000);
   }
+
+  useEffect(() => {
+    if (!tiempo) return;
+    const id = window.setInterval(() => {
+      const transcurridos = Math.floor((Date.now() - inicioRef.current) / 1000);
+      setReloj(tiempoRestante(minutosDePartida.current, transcurridos));
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, [tiempo]);
 
   function iniciarPartida() {
     inicioRef.current = Date.now();
@@ -151,7 +162,11 @@ export function App() {
                   checked={tiempo === formatearReloj(minutos)}
                   onChange={() => {
                     setMinutosElegidos(minutos);
-                    setTiempo(formatearReloj(minutos));
+                    const marca = formatearReloj(minutos);
+                    setTiempo(marca);
+                    setReloj(marca);
+                    inicioRef.current = Date.now();
+                    minutosDePartida.current = minutos;
                   }}
                 />
                 {minutos} minutos
@@ -186,7 +201,7 @@ export function App() {
             <div className="reloj-container">
               <span className="label">Tiempo restante</span>
               <div id="reloj" data-testid="reloj" className="reloj">
-                {tiempo}
+                {reloj}
               </div>
             </div>
           ) : null}
