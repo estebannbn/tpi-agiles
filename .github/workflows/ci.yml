@@ -87,6 +87,8 @@ jobs:
     steps:
       - name: Checkout del repositorio
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Configurar Node.js
         uses: actions/setup-node@v4
@@ -99,6 +101,15 @@ jobs:
 
       - name: Ejecutar Linter y Quality Gate
         run: npm run lint
+
+      - name: Generar reporte de cobertura para Sonar
+        run: npm run coverage
+
+      - name: Análisis SonarQube Cloud
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
 
   acceptance-tests:
     name: 5. Acceptance Tests
